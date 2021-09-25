@@ -1,5 +1,5 @@
-@include("crudbooster::emails.header")
+@include("cms::emails.header")
 
 {!!$content!!}
 
-@include("crudbooster::emails.footer")
+@include("cms::emails.footer")

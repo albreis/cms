@@ -1,8 +1,8 @@
-@extends("crudbooster::admin_template")
+@extends("cms::admin_template")
 @section("content")
 
     @push('head')
-        <link rel='stylesheet' href='<?php echo asset("vendor/crudbooster/assets/select2/dist/css/select2.min.css")?>'/>
+        <link rel='stylesheet' href='<?php echo asset("vendor/cms/assets/select2/dist/css/select2.min.css")?>'/>
         <style>
             .select2-container--default .select2-selection--single {
                 border-radius: 0px !important
@@ -15,7 +15,7 @@
     @endpush
 
     @push('bottom')
-        <script src='<?php echo asset("vendor/crudbooster/assets/select2/dist/js/select2.full.min.js")?>'></script>
+        <script src='<?php echo asset("vendor/cms/assets/select2/dist/js/select2.full.min.js")?>'></script>
         <script>
             $(function () {
                 $('.select2').select2();
@@ -24,7 +24,7 @@
             $(function () {
                 $('select[name=table]').change(function () {
                     var v = $(this).val().replace(".", "_");
-                    $.get("{{CRUDBooster::mainpath('check-slug')}}/" + v, function (resp) {
+                    $.get("{{CMS::mainpath('check-slug')}}/" + v, function (resp) {
                         if (resp.total == 0) {
                             $('input[name=path]').val(v);
                         } else {

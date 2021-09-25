@@ -2,7 +2,7 @@
 <header class="main-header">
 
     <!-- Logo -->
-    <a href="{{url(config('crudbooster.ADMIN_PATH'))}}" title='{{Session::get('appname')}}' class="logo">{{CRUDBooster::getSetting('appname')}}</a>
+    <a href="{{url(config('cms.ADMIN_PATH'))}}" title='{{Session::get('appname')}}' class="logo">{{CMS::getSetting('appname')}}</a>
 
     <!-- Header Navbar -->
     <nav class="navbar navbar-static-top" role="navigation">
@@ -47,17 +47,17 @@
                     <!-- Menu Toggle Button -->
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <!-- The user image in the navbar-->
-                        <img src="{{ CRUDBooster::myPhoto() }}" class="user-image" alt="User Image"/>
+                        <img src="{{ CMS::myPhoto() }}" class="user-image" alt="User Image"/>
                         <!-- hidden-xs hides the username on small devices so only the image appears. -->
-                        <span class="hidden-xs">{{ CRUDBooster::myName() }}</span>
+                        <span class="hidden-xs">{{ CMS::myName() }}</span>
                     </a>
                     <ul class="dropdown-menu">
                         <!-- The user image in the menu -->
                         <li class="user-header">
-                            <img src="{{ CRUDBooster::myPhoto() }}" class="img-circle" alt="User Image"/>
+                            <img src="{{ CMS::myPhoto() }}" class="img-circle" alt="User Image"/>
                             <p>
-                                {{ CRUDBooster::myName() }}
-                                <small>{{ CRUDBooster::myPrivilegeName() }}</small>
+                                {{ CMS::myName() }}
+                                <small>{{ CMS::myPrivilegeName() }}</small>
                                 <small><em><?php echo date('d F Y')?></em></small>
                             </p>
                         </li>

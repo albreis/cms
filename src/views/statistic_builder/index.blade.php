@@ -71,7 +71,7 @@
             $('#' + area).append("<div id='" + id + "' class='area-loading'><i class='fa fa-spin fa-spinner'></i></div>");
 
             var sorting = $('#' + area + ' .border-box').length;
-            $.post("{{CRUDBooster::mainpath('add-component')}}", {
+            $.post("{{CMS::mainpath('add-component')}}", {
                 component_name: component,
                 id_cms_statistics: id_cms_statistics,
                 sorting: sorting,
@@ -84,9 +84,9 @@
 
     </script>
     <!--DATATABLE-->
-    <link rel="stylesheet" href="{{ asset ('vendor/crudbooster/assets/adminlte/plugins/datatables/dataTables.bootstrap.css')}}">
-    <script src="{{ asset ('vendor/crudbooster/assets/adminlte/plugins/datatables/jquery.dataTables.min.js')}}"></script>
-    <script src="{{ asset ('vendor/crudbooster/assets/adminlte/plugins/datatables/dataTables.bootstrap.min.js')}}"></script>
+    <link rel="stylesheet" href="{{ asset ('vendor/cms/assets/adminlte/plugins/datatables/dataTables.bootstrap.css')}}">
+    <script src="{{ asset ('vendor/cms/assets/adminlte/plugins/datatables/jquery.dataTables.min.js')}}"></script>
+    <script src="{{ asset ('vendor/cms/assets/adminlte/plugins/datatables/dataTables.bootstrap.min.js')}}"></script>
     <!--END HERE-->
 @endpush
 
@@ -141,7 +141,7 @@
             /*border:2px dotted #BC3F30;*/
         }
 
-        @if(CRUDBooster::getCurrentMethod() == 'getBuilder')
+        @if(CMS::getCurrentMethod() == 'getBuilder')
         .border-box:hover .action {
             display: block;
         }
@@ -184,7 +184,7 @@
 
             var cloneSidebar = $('.control-sidebar').clone();
 
-            @if(CRUDBooster::getCurrentMethod() == 'getBuilder')
+            @if(CMS::getCurrentMethod() == 'getBuilder')
             createSortable();
 
             @endif
@@ -219,7 +219,7 @@
                             var index = $('#' + componentID).index();
 
 
-                            $.post("{{CRUDBooster::mainpath('update-area-component')}}", {
+                            $.post("{{CMS::mainpath('update-area-component')}}", {
                                 componentid: componentID,
                                 sorting: index,
                                 areaname: areaname
@@ -241,12 +241,12 @@
             $('.connectedSortable').each(function () {
                 var areaname = $(this).attr('id');
 
-                $.get("{{CRUDBooster::adminpath('statistic_builder/list-component')}}/" + id_cms_statistics + "/" + areaname, function (response) {
+                $.get("{{CMS::adminpath('statistic_builder/list-component')}}/" + id_cms_statistics + "/" + areaname, function (response) {
                     if (response.components) {
 
                         $.each(response.components, function (i, obj) {
                             $('#' + areaname).append("<div id='area-loading-" + obj.componentID + "' class='area-loading'><i class='fa fa-spin fa-spinner'></i></div>");
-                            $.get("{{CRUDBooster::adminpath('statistic_builder/view-component')}}/" + obj.componentID, function (view) {
+                            $.get("{{CMS::adminpath('statistic_builder/view-component')}}/" + obj.componentID, function (view) {
                                 console.log('View For CID ' + view.componentID);
                                 $('#area-loading-' + obj.componentID).remove();
                                 $('#' + areaname).append(view.layout);
@@ -273,7 +273,7 @@
                     },
                     function () {
 
-                        $.get("{{CRUDBooster::mainpath('delete-component')}}/" + componentID, function () {
+                        $.get("{{CMS::mainpath('delete-component')}}/" + componentID, function () {
                             $this.parents('.border-box').remove();
 
                         });
@@ -288,7 +288,7 @@
                 $('#modal-statistic .modal-body').html("<i class='fa fa-spin fa-spinner'></i> Please wait loading...");
                 $('#modal-statistic').modal('show');
 
-                $.get("{{CRUDBooster::mainpath('edit-component')}}/" + componentID, function (response) {
+                $.get("{{CMS::mainpath('edit-component')}}/" + componentID, function (response) {
                     $('#modal-statistic .modal-body').html(response);
                 })
             })
@@ -323,7 +323,7 @@
                 $.ajax({
                     data: $('#modal-statistic form').serialize(),
                     type: 'POST',
-                    url: "{{CRUDBooster::mainpath('save-component')}}",
+                    url: "{{CMS::mainpath('save-component')}}",
                     success: function () {
 
                         $button.removeClass('disabled').text('Save Changes');

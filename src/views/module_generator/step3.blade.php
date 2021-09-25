@@ -1,7 +1,7 @@
-@extends("crudbooster::admin_template")
+@extends("cms::admin_template")
 @section("content")
     @push('head')
-        <link rel='stylesheet' href='<?php echo asset("vendor/crudbooster/assets/select2/dist/css/select2.min.css")?>'/>
+        <link rel='stylesheet' href='<?php echo asset("vendor/cms/assets/select2/dist/css/select2.min.css")?>'/>
         <style>
             .select2-container--default .select2-selection--single {
                 border-radius: 0px !important
@@ -13,7 +13,7 @@
         </style>
     @endpush
     @push('bottom')
-        <script src='<?php echo asset("vendor/crudbooster/assets/select2/dist/js/select2.full.min.js")?>'></script>
+        <script src='<?php echo asset("vendor/cms/assets/select2/dist/js/select2.full.min.js")?>'></script>
         <script>
             $(function () {
                 $('.select2').select2();
@@ -228,7 +228,7 @@
 
                         t.parent('tr').find('.option_area').empty();
 
-                        $.getJSON("{{CRUDBooster::mainpath('type-info')}}/" + v, function (data) {
+                        $.getJSON("{{CMS::mainpath('type-info')}}/" + v, function (data) {
 
                             if (data.alert) {
                                 t.parent('tr').find('.option_area').prepend("<div class='alert alert-warning'><strong>IMPORTANT</strong><br/>" + data.alert + "</div>");
@@ -471,7 +471,7 @@
                                     <?php
 
                                     $type = $form["type"] ?: "text";
-                                    $types = base_path('vendor/crocodicstudio/crudbooster/src/views/default/type_components/'.$type.'/info.json');
+                                    $types = base_path('vendor/albreis/cms/src/views/default/type_components/'.$type.'/info.json');
                                     $types = file_get_contents($types);
                                     $types = json_decode($types);
 
@@ -601,7 +601,7 @@
         </div>
         <div class="box-footer">
             <div align="right">
-                <button type="button" onclick="location.href='{{CRUDBooster::mainpath('step2').'/'.$id}}'" class="btn btn-default">&laquo; Back</button>
+                <button type="button" onclick="location.href='{{CMS::mainpath('step2').'/'.$id}}'" class="btn btn-default">&laquo; Back</button>
                 <input type="submit" class="btn btn-primary" value="Step 4 &raquo;">
             </div>
         </div>

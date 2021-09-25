@@ -1,4 +1,4 @@
-@extends('crudbooster::admin_template')
+@extends('cms::admin_template')
 
 @section('content')
 
@@ -58,14 +58,14 @@
 
     <div class="box">
         <div class="box-header">
-            @if($button_bulk_action && ( ($button_delete && CRUDBooster::isDelete()) || $button_selected) )
+            @if($button_bulk_action && ( ($button_delete && CMS::isDelete()) || $button_selected) )
                 <div class="pull-{{ cbLang('left') }}">
                     <div class="selected-action" style="display:inline-block;position:relative;">
                         <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i
                                     class='fa fa-check-square-o'></i> {{cbLang("button_selected_action")}}
                             <span class="fa fa-caret-down"></span></button>
                         <ul class="dropdown-menu">
-                            @if($button_delete && CRUDBooster::isDelete())
+                            @if($button_delete && CMS::isDelete())
                                 <li><a href="javascript:void(0)" data-name='delete' title='{{cbLang('action_delete_selected')}}'><i
                                                 class="fa fa-trash"></i> {{cbLang('action_delete_selected')}}</a></li>
                             @endif
@@ -94,7 +94,7 @@
                     <div class="input-group">
                         <input type="text" name="q" value="{{ Request::get('q') }}" class="form-control input-sm pull-{{ cbLang('right') }}"
                                placeholder="{{cbLang('filter_search')}}"/>
-                        {!! CRUDBooster::getUrlParameters(['q']) !!}
+                        {!! CMS::getUrlParameters(['q']) !!}
                         <div class="input-group-btn">
                             @if(Request::get('q'))
                                 <?php
@@ -104,7 +104,7 @@
                                 $build_query = ($build_query) ? "?".$build_query : "";
                                 $build_query = (Request::all()) ? $build_query : "";
                                 ?>
-                                <button type='button' onclick='location.href="{{ CRUDBooster::mainpath().$build_query}}"'
+                                <button type='button' onclick='location.href="{{ CMS::mainpath().$build_query}}"'
                                         title="{{cbLang('button_reset')}}" class='btn btn-sm btn-warning'><i class='fa fa-ban'></i></button>
                             @endif
                             <button type='submit' class="btn btn-sm btn-default"><i class="fa fa-search"></i></button>
@@ -114,7 +114,7 @@
 
 
                 <form method='get' id='form-limit-paging' style="display:inline-block" action='{{Request::url()}}'>
-                    {!! CRUDBooster::getUrlParameters(['limit']) !!}
+                    {!! CMS::getUrlParameters(['limit']) !!}
                     <div class="input-group">
                         <select onchange="$('#form-limit-paging').submit()" name='limit' style="width: 56px;" class='form-control input-sm'>
                             <option {{($limit==5)?'selected':''}} value='5'>5</option>
@@ -134,7 +134,7 @@
 
         </div>
         <div class="box-body table-responsive no-padding">
-            @include("crudbooster::default.table")
+            @include("cms::default.table")
         </div>
     </div>
 

@@ -1,4 +1,4 @@
-@extends("crudbooster::admin_template")
+@extends("cms::admin_template")
 @section("content")
 
     <ul class="nav nav-tabs">
@@ -234,7 +234,7 @@
             </div>
             <div class="box-footer">
                 <div align="right">
-                    <button type="button" onclick="location.href='{{CRUDBooster::mainpath('step3').'/'.$id}}'" class="btn btn-default">&laquo; Back</button>
+                    <button type="button" onclick="location.href='{{CMS::mainpath('step3').'/'.$id}}'" class="btn btn-default">&laquo; Back</button>
                     <input type="submit" name="submit" class='btn btn-primary' value='Save Module'>
                 </div>
             </div>

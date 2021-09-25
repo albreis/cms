@@ -1,12 +1,12 @@
-@extends('crudbooster::admin_template')
+@extends('cms::admin_template')
 
 @section('content')
 
     <div style="width:750px;margin:0 auto ">
 
 
-        @if(CRUDBooster::getCurrentMethod() != 'getProfile')
-            <p><a href='{{CRUDBooster::mainpath()}}'>{{cbLang("form_back_to_list",['module'=>CRUDBooster::getCurrentModule()->name])}}</a></p>
+        @if(CMS::getCurrentMethod() != 'getProfile')
+            <p><a href='{{CMS::mainpath()}}'>{{cbLang("form_back_to_list",['module'=>CMS::getCurrentModule()->name])}}</a></p>
     @endif
 
 
@@ -181,7 +181,7 @@
 
                 </div><!-- /.box-body -->
                 <div class="box-footer" align="right">
-                    <button type='button' onclick="location.href='{{CRUDBooster::mainpath()}}'"
+                    <button type='button' onclick="location.href='{{CMS::mainpath()}}'"
                             class='btn btn-default'>{{cbLang("button_cancel")}}</button>
                     <button type='submit' class='btn btn-primary'><i class='fa fa-save'></i> {{cbLang("button_save")}}</button>
                 </div><!-- /.box-footer-->

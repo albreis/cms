@@ -1,4 +1,4 @@
-@extends('crudbooster::admin_template')
+@extends('cms::admin_template')
 
 @section('content')
 
@@ -15,9 +15,9 @@
     @endpush
 
     <ul class="nav nav-tabs">
-        <li><a href="{{ CRUDBooster::mainpath() }}"><i class='fa fa-file'></i> API Documentation</a></li>
-        <li><a href="{{ CRUDBooster::mainpath('screet-key') }}"><i class='fa fa-key'></i> API Secret Key</a></li>
-        <li class='active'><a href="{{ CRUDBooster::mainpath('generator') }}"><i class='fa fa-cog'></i> API Generator</a></li>
+        <li><a href="{{ CMS::mainpath() }}"><i class='fa fa-file'></i> API Documentation</a></li>
+        <li><a href="{{ CMS::mainpath('screet-key') }}"><i class='fa fa-key'></i> API Secret Key</a></li>
+        <li class='active'><a href="{{ CMS::mainpath('generator') }}"><i class='fa fa-cog'></i> API Generator</a></li>
     </ul>
 
     <div class='box'>
@@ -139,7 +139,7 @@
                         }
 
                         no_params = 0;
-                        $.get('{{url(config("crudbooster.ADMIN_PATH"))."/api_generator/column-table"}}/' + t + '/' + type, function (resp) {
+                        $.get('{{url(config("cms.ADMIN_PATH"))."/api_generator/column-table"}}/' + t + '/' + type, function (resp) {
                             $.each(resp, function (i, obj) {
 
                                 switch (obj.type) {
@@ -200,7 +200,7 @@
                             $('textarea[name=sub_query_1]').prop('readonly', true);
                         }
 
-                        $.get('{{url(config("crudbooster.ADMIN_PATH"))."/api_generator/column-table"}}/' + t + '/' + type, function (resp) {
+                        $.get('{{url(config("cms.ADMIN_PATH"))."/api_generator/column-table"}}/' + t + '/' + type, function (resp) {
                             var no_params = 0;
                             $('#table-parameters tbody').empty();
                             $.each(resp, function (i, obj) {

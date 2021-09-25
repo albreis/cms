@@ -25,7 +25,7 @@
                 } else {
                     $val = $label = $d;
                 }
-				$checked = ( ($value && in_array($val, $value)) || (CRUDBooster::isCreate() && ($k==0 && $form['validation'])) ) ? "checked" : "";
+				$checked = ( ($value && in_array($val, $value)) || (CMS::isCreate() && ($k==0 && $form['validation'])) ) ? "checked" : "";
                 ?>
                 <div class=" {{$disabled}}">
                     <label class='radio-inline'>
@@ -45,7 +45,7 @@
             $tables = explode('.', $datatable_tab);
             $selects_data = DB::table($tables[0])->select($tables[0].".id");
 
-            if (CRUDBooster::isColumnExists($tables[0], 'deleted_at')) {
+            if (CMS::isColumnExists($tables[0], 'deleted_at')) {
                 $selects_data->where('deleted_at', NULL);
             }
 
@@ -57,8 +57,8 @@
                 for ($i = 1; $i <= count($tables) - 1; $i++) {
                     $tab = $tables[$i];
                     $parent_table = $tables[$i - 1];
-                    $fk_field = CRUDBooster::getForeignKey($parent_table, $tab);
-                    $pk = CRUDBooster::findPrimaryKey($tab) ?: 'id';
+                    $fk_field = CMS::getForeignKey($parent_table, $tab);
+                    $pk = CMS::findPrimaryKey($tab) ?: 'id';
                     $selects_data->leftjoin($tab, $tab.'.'.$pk, '=', $fk_field);
                 }
             }

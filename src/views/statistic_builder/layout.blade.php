@@ -4,16 +4,16 @@
     <meta charset="UTF-8">
     <title>{{ ($page_title)?Session::get('appname').': '.strip_tags($page_title):"Admin Area" }}</title>
     <meta name="csrf-token" content="{{ csrf_token() }}"/>
-    <meta name='generator' content='CRUDBooster.com'/>
+    <meta name='generator' content='CMS.com'/>
     <meta name='robots' content='noindex,nofollow'/>
     <link rel="shortcut icon"
-          href="{{ CRUDBooster::getSetting('favicon')?asset(CRUDBooster::getSetting('favicon')):asset('vendor/crudbooster/assets/logo_crudbooster.png') }}">
+          href="{{ CMS::getSetting('favicon')?asset(CMS::getSetting('favicon')):asset('vendor/cms/assets/logo_cms.png') }}">
     <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
 
     <!-- Bootstrap 3.3.2 -->
-    <link href="{{ asset("vendor/crudbooster/assets/adminlte/bootstrap/css/bootstrap.min.css") }}" rel="stylesheet" type="text/css"/>
+    <link href="{{ asset("vendor/cms/assets/adminlte/bootstrap/css/bootstrap.min.css") }}" rel="stylesheet" type="text/css"/>
     <!-- Font Awesome Icons -->
-    <link href="{{asset("vendor/crudbooster/assets/adminlte/font-awesome/css")}}/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+    <link href="{{asset("vendor/cms/assets/adminlte/font-awesome/css")}}/font-awesome.min.css" rel="stylesheet" type="text/css"/>
     <!-- Ionicons -->
     <link href="http://code.ionicframework.com/ionicons/2.0.0/css/ionicons.min.css" rel="stylesheet" type="text/css"/>
 
@@ -25,21 +25,21 @@
     <!-- REQUIRED JS SCRIPTS -->
 
     <!-- jQuery 2.2.3 -->
-    <script src="{{ asset ('vendor/crudbooster/assets/adminlte/plugins/jQuery/jquery-2.2.3.min.js') }}"></script>
+    <script src="{{ asset ('vendor/cms/assets/adminlte/plugins/jQuery/jquery-2.2.3.min.js') }}"></script>
 
     <!-- Bootstrap 3.4.1 JS -->
-    <script src="{{ asset ('vendor/crudbooster/assets/adminlte/bootstrap/js/bootstrap.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset ('vendor/cms/assets/adminlte/bootstrap/js/bootstrap.min.js') }}" type="text/javascript"></script>
     <!-- AdminLTE App -->
-    <script src="{{ asset ('vendor/crudbooster/assets/adminlte/dist/js/app.js') }}" type="text/javascript"></script>
+    <script src="{{ asset ('vendor/cms/assets/adminlte/dist/js/app.js') }}" type="text/javascript"></script>
 
 
     <!-- Theme style -->
-    <link href="{{ asset("vendor/crudbooster/assets/adminlte/dist/css/AdminLTE.min.css")}}" rel="stylesheet" type="text/css"/>
-    <link href="{{ asset("vendor/crudbooster/assets/adminlte/dist/css/skins/_all-skins.min.css")}}" rel="stylesheet" type="text/css"/>
+    <link href="{{ asset("vendor/cms/assets/adminlte/dist/css/AdminLTE.min.css")}}" rel="stylesheet" type="text/css"/>
+    <link href="{{ asset("vendor/cms/assets/adminlte/dist/css/skins/_all-skins.min.css")}}" rel="stylesheet" type="text/css"/>
 
     <!--SWEET ALERT-->
-    <script src="{{asset('vendor/crudbooster/assets/sweetalert/dist/sweetalert.min.js')}}"></script>
-    <link rel="stylesheet" type="text/css" href="{{asset('vendor/crudbooster/assets/sweetalert/dist/sweetalert.css')}}">
+    <script src="{{asset('vendor/cms/assets/sweetalert/dist/sweetalert.min.js')}}"></script>
+    <link rel="stylesheet" type="text/css" href="{{asset('vendor/cms/assets/sweetalert/dist/sweetalert.css')}}">
 
     @stack('head')
 </head>
@@ -50,8 +50,8 @@
         <nav class="navbar navbar-static-top">
             <div class="container">
                 <div class="navbar-header">
-                    <a href="{{url(config('crudbooster.ADMIN_PATH'))}}" title='{{Session::get('appname')}}'
-                       class="navbar-brand">{{CRUDBooster::getSetting('appname')}}</a>
+                    <a href="{{url(config('cms.ADMIN_PATH'))}}" title='{{Session::get('appname')}}'
+                       class="navbar-brand">{{CMS::getSetting('appname')}}</a>
                     <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
                         <i class="fa fa-bars"></i>
                     </button>
@@ -69,7 +69,7 @@
                     <ul class="nav navbar-nav">
                         <li><a href="#" class='btn-show-sidebar' data-toggle="control-sidebar"><i class='fa fa-bars'></i> Add Widget</a></li>
 
-                        <li><a href="{{CRUDBooster::mainpath()}}"><i class='fa fa-sign-out'></i> Exit</a></li>
+                        <li><a href="{{CMS::mainpath()}}"><i class='fa fa-sign-out'></i> Exit</a></li>
                     </ul>
                 </div>
                 <!-- /.navbar-custom-menu -->
@@ -96,7 +96,7 @@
             <li class='connectedSortable' title='Drag To Main Area'>
                 <div id='btn-smallbox' class='button-widget-area'>
                     <a href="#" data-component='smallbox' class='btn-add-widget add-small-box'>
-                        <img src='{{asset("vendor/crudbooster/assets/statistic_builder/smallbox.png")}}'/>
+                        <img src='{{asset("vendor/cms/assets/statistic_builder/smallbox.png")}}'/>
                         <div class='title'>Small Box</div>
                     </a>
                 </div>
@@ -104,7 +104,7 @@
             <li class='connectedSortable' title='Drag To Main Area'>
                 <div id='btn-table' class='button-widget-area'>
                     <a href="#" data-component='table' class='btn-add-widget add-table'>
-                        <img src='{{asset("vendor/crudbooster/assets/statistic_builder/table.png")}}'/>
+                        <img src='{{asset("vendor/cms/assets/statistic_builder/table.png")}}'/>
                         <div class='title'>Table</div>
                     </a>
                 </div>
@@ -112,7 +112,7 @@
             <li class='connectedSortable' title='Drag To Main Area'>
                 <div id='btn-chartarea' class='button-widget-area'>
                     <a href="#" data-component='chartarea' class='btn-add-widget add-chart-area'>
-                        <img src='{{asset("vendor/crudbooster/assets/statistic_builder/chart_area.png")}}'/>
+                        <img src='{{asset("vendor/cms/assets/statistic_builder/chart_area.png")}}'/>
                         <div class='title'>Chart Area</div>
                     </a>
                 </div>
@@ -120,7 +120,7 @@
             <li class='connectedSortable' title='Drag To Main Area'>
                 <div id='btn-panelarea' class='button-widget-area'>
                     <a href="#" data-component='panelarea' class='btn-add-widget add-panel-area'>
-                        <img src='{{asset("vendor/crudbooster/assets/statistic_builder/panel.png")}}'/>
+                        <img src='{{asset("vendor/cms/assets/statistic_builder/panel.png")}}'/>
                         <div class='title'>Panel Area</div>
                     </a>
                 </div>
@@ -129,7 +129,7 @@
             <li class='connectedSortable' title='Drag To Main Area'>
                 <div id='btn-panelcustom' class='button-widget-area'>
                     <a href="#" data-component='panelcustom' class='btn-add-widget add-panel-custom'>
-                        <img src='{{asset("vendor/crudbooster/assets/statistic_builder/panel.png")}}'/>
+                        <img src='{{asset("vendor/cms/assets/statistic_builder/panel.png")}}'/>
                         <div class='title'>Panel Custom</div>
                     </a>
                 </div>
@@ -138,7 +138,7 @@
             <li class='connectedSortable' title='Drag To Main Area'>
                 <div id='btn-chartarea' class='button-widget-area'>
                     <a href="#" data-component='chartline' class='btn-add-widget add-chart-line'>
-                        <img src='{{asset("vendor/crudbooster/assets/statistic_builder/chart_line.png")}}'/>
+                        <img src='{{asset("vendor/cms/assets/statistic_builder/chart_line.png")}}'/>
                         <div class='title'>Chart Line</div>
                     </a>
                 </div>
@@ -147,7 +147,7 @@
             <li class='connectedSortable' title='Drag To Main Area'>
                 <div id='btn-chartarea' class='button-widget-area'>
                     <a href="#" data-component='chartbar' class='btn-add-widget add-chart-bar'>
-                        <img src='{{asset("vendor/crudbooster/assets/statistic_builder/chart_bar.png")}}'/>
+                        <img src='{{asset("vendor/cms/assets/statistic_builder/chart_bar.png")}}'/>
                         <div class='title'>Chart Bar</div>
                     </a>
                 </div>
@@ -174,7 +174,7 @@
       Both of these plugins are recommended to enhance the
       user experience -->
 <!-- SlimScroll 1.3.0 -->
-<script src="{{ asset('vendor/crudbooster/assets/adminlte/plugins/slimScroll/jquery.slimscroll.min.js')}}"></script>
+<script src="{{ asset('vendor/cms/assets/adminlte/plugins/slimScroll/jquery.slimscroll.min.js')}}"></script>
 
 @stack('bottom')
 </body>

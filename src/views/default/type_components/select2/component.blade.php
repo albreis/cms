@@ -17,7 +17,7 @@
             $format = @$form['datatable_format'];
 
             $raw = explode(',', $datatable);
-            $url = CRUDBooster::mainpath("find-data");
+            $url = CMS::mainpath("find-data");
 
             $table1 = $raw[0];
             $column1 = $raw[1];
@@ -156,7 +156,7 @@
                     $select_table = explode(',', $form['datatable'])[0];
                     $select_title = explode(',', $form['datatable'])[1];
                     $select_where = $form['datatable_where'];
-                    $pk = CRUDBooster::findPrimaryKey($select_table);
+                    $pk = CMS::findPrimaryKey($select_table);
 
                     $result = DB::table($select_table)->select($pk, $select_title);
                     if ($select_where) {
@@ -170,8 +170,8 @@
                         $value = DB::table($params[0])->where($params[2], $id)->first()->{$params[1]};
                         $value = explode(",", $value);
                     } else {
-                        $foreignKey = CRUDBooster::getForeignKey($table, $form['relationship_table']);
-                        $foreignKey2 = CRUDBooster::getForeignKey($select_table, $form['relationship_table']);
+                        $foreignKey = CMS::getForeignKey($table, $form['relationship_table']);
+                        $foreignKey2 = CMS::getForeignKey($select_table, $form['relationship_table']);
                         $value = DB::table($form['relationship_table'])->where($foreignKey, $id);
                         $value = $value->pluck($foreignKey2)->toArray();
                     }
@@ -191,7 +191,7 @@
                         $select_title = explode(',', $form['datatable'])[1];
                         $select_where = $form['datatable_where'];
                         $datatable_format = $form['datatable_format'];
-                        $select_table_pk = CRUDBooster::findPrimaryKey($select_table);
+                        $select_table_pk = CMS::findPrimaryKey($select_table);
                         $result = DB::table($select_table)->select($select_table_pk, $select_title);
                         if ($datatable_format) {
                             $result->addSelect(DB::raw("CONCAT(".$datatable_format.") as $select_title"));
@@ -199,7 +199,7 @@
                         if ($select_where) {
                             $result->whereraw($select_where);
                         }
-                        if (CRUDBooster::isColumnExists($select_table, 'deleted_at')) {
+                        if (CMS::isColumnExists($select_table, 'deleted_at')) {
                             $result->whereNull('deleted_at');
                         }
                         $result = $result->orderby($select_title, 'asc')->get();

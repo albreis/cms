@@ -1,7 +1,7 @@
-@extends("crudbooster::admin_template")
+@extends("cms::admin_template")
 @section("content")
     @push('head')
-        <link rel='stylesheet' href='<?php echo asset("vendor/crudbooster/assets/select2/dist/css/select2.min.css")?>'/>
+        <link rel='stylesheet' href='<?php echo asset("vendor/cms/assets/select2/dist/css/select2.min.css")?>'/>
         <style>
             .select2-container--default .select2-selection--single {
                 border-radius: 0px !important
@@ -13,7 +13,7 @@
         </style>
     @endpush
     @push('bottom')
-        <script src='<?php echo asset("vendor/crudbooster/assets/select2/dist/js/select2.full.min.js")?>'></script>
+        <script src='<?php echo asset("vendor/cms/assets/select2/dist/js/select2.full.min.js")?>'></script>
         <script>
             $(function () {
                 $('.select2').select2();
@@ -177,7 +177,7 @@
 
                 t.after("<ul class='sub'><li><i class='fa fa-spin fa-spinner'></i> Loading...</li></ul>");
 
-                $.get("{{CRUDBooster::mainpath('table-columns')}}/" + table, function (response) {
+                $.get("{{CMS::mainpath('table-columns')}}/" + table, function (response) {
                     t.next("ul").remove();
                     var list = '';
                     $.each(response, function (i, obj) {
@@ -198,7 +198,7 @@
 
                 t.after("<ul class='sub'><li><i class='fa fa-spin fa-spinner'></i> Loading...</li></ul>");
 
-                $.get("{{CRUDBooster::mainpath('table-columns')}}/" + table, function (response) {
+                $.get("{{CMS::mainpath('table-columns')}}/" + table, function (response) {
                     t.next("ul").remove();
                     var list = '';
                     $.each(response, function (i, obj) {
@@ -381,7 +381,7 @@
         </div>
         <div class="box-footer">
             <div align="right">
-                <button type="button" onclick="location.href='{{CRUDBooster::mainpath('step1').'/'.$id}}'" class="btn btn-default">&laquo; Back</button>
+                <button type="button" onclick="location.href='{{CMS::mainpath('step1').'/'.$id}}'" class="btn btn-default">&laquo; Back</button>
                 <input type="submit" class="btn btn-primary" value="Step 3 &raquo;">
             </div>
         </div>

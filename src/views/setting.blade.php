@@ -1,4 +1,4 @@
-@extends('crudbooster::admin_template')
+@extends('cms::admin_template')
 @section('content')
     @push('bottom')
         <script src="{{asset('vendor/laravel-filemanager/js/lfm.js')}}"></script>
@@ -61,7 +61,7 @@
                 <i class='fa fa-cog'></i> {{$page_title}}
             </div>
             <div class="panel-body">
-                <form method='post' id="form" enctype="multipart/form-data" action='{{CRUDBooster::mainpath("save-setting?group_setting=$page_title")}}'>
+                <form method='post' id="form" enctype="multipart/form-data" action='{{CMS::mainpath("save-setting?group_setting=$page_title")}}'>
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                     <div class="box-body">
                         <?php
@@ -84,10 +84,10 @@
                         ?>
                         <div class='form-group'>
                             <label class='label-setting' title="{{$s->name}}">{{$s->label}}
-                                <a style="visibility:hidden" href='{{CRUDBooster::mainpath("edit/$s->id")}}' title='Edit This Meta Setting'
+                                <a style="visibility:hidden" href='{{CMS::mainpath("edit/$s->id")}}' title='Edit This Meta Setting'
                                    class='btn btn-box-tool'><i class='fa fa-pencil'></i></a>
                                 <a style="visibility:hidden" href='javascript:;' title='Delete this Setting' class='btn btn-box-tool'
-                                   onClick='swal({   title: "Are you sure?",   text: "You will not be able to recover {{$s->label}} and may be can cause some errors on your system !",   type: "warning",   showCancelButton: true,   confirmButtonColor: "#DD6B55",   confirmButtonText: "Yes, delete it!",   closeOnConfirm: false }, function(){  location.href="{{CRUDBooster::mainpath("delete/$s->id")}}" });'
+                                   onClick='swal({   title: "Are you sure?",   text: "You will not be able to recover {{$s->label}} and may be can cause some errors on your system !",   type: "warning",   showCancelButton: true,   confirmButtonColor: "#DD6B55",   confirmButtonText: "Yes, delete it!",   closeOnConfirm: false }, function(){  location.href="{{CMS::mainpath("delete/$s->id")}}" });'
                                 ><i class='fa fa-trash'></i></a>
                             </label>
                             <?php
@@ -112,7 +112,7 @@
                                     if ($value) {
                                         echo "<p><a href='".asset($value)."' target='_blank' title='Download the file of $s->label'><i class='fa fa-download'></i> Download the File  of $s->label</a></p>";
                                         echo "<input type='hidden' name='$s->name' value='$value'/>";
-                                        echo "<div class='pull-right'><a class='btn btn-danger btn-xs' onclick='if(confirm(\"Are you sure want to delete ?\")) location.href=\"".CRUDBooster::mainpath("delete-file-setting?id=$s->id")."\"' title='Click here to delete'><i class='fa fa-trash'></i></a></div>";
+                                        echo "<div class='pull-right'><a class='btn btn-danger btn-xs' onclick='if(confirm(\"Are you sure want to delete ?\")) location.href=\"".CMS::mainpath("delete-file-setting?id=$s->id")."\"' title='Click here to delete'><i class='fa fa-trash'></i></a></div>";
                                     } else {
                                         echo "<input type='file' name='$s->name' class='form-control'/>";
                                     }
@@ -122,7 +122,7 @@
                                     if ($value) {
                                         echo "<p><a href='".asset($value)."' target='_blank' title='Download the file of $s->label'><i class='fa fa-download'></i> Download the File  of $s->label</a></p>";
                                         echo "<input type='hidden' name='$s->name' value='$value'/>";
-                                        echo "<div class='pull-right'><a class='btn btn-danger btn-xs' onclick='if(confirm(\"Are you sure want to delete ?\")) location.href=\"".CRUDBooster::mainpath("delete-file-setting?id=$s->id")."\"' title='Click here to delete'><i class='fa fa-trash'></i></a></div>";
+                                        echo "<div class='pull-right'><a class='btn btn-danger btn-xs' onclick='if(confirm(\"Are you sure want to delete ?\")) location.href=\"".CMS::mainpath("delete-file-setting?id=$s->id")."\"' title='Click here to delete'><i class='fa fa-trash'></i></a></div>";
                                     } else {
                                         echo "<input type='file' name='$s->name' class='form-control'/>";
                                     }

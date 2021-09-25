@@ -25,7 +25,7 @@
             ?>
             @if(!$readonly || !$disabled)
                 <p><a class='btn btn-danger btn-delete btn-sm' onclick="if(!confirm('{{cbLang("delete_title_confirm")}}')) return false"
-                      href='{{url(CRUDBooster::mainpath("delete-image?image=".$value."&id=".$row->id."&column=".$name))}}'><i
+                      href='{{url(CMS::mainpath("delete-image?image=".$value."&id=".$row->id."&column=".$name))}}'><i
                                 class='fa fa-ban'></i> {{cbLang('text_delete')}} </a></p>
             @endif
         @endif

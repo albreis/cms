@@ -1,4 +1,4 @@
-@extends('crudbooster::admin_template')
+@extends('cms::admin_template')
 @section('content')
 
     @push('head')
@@ -78,7 +78,7 @@
         </script>
     @endpush
     @push('bottom')
-        <script src='{{asset("vendor/crudbooster/assets/jquery-sortable-min.js")}}'></script>
+        <script src='{{asset("vendor/cms/assets/jquery-sortable-min.js")}}'></script>
         <script type="text/javascript">
             $(function () {
                 var id_cms_privileges = '{{$id_cms_privileges}}';
@@ -149,7 +149,7 @@
                                             class='pull-right'><a class='fa fa-pencil' title='Edit'
                                                                   href='{{route("MenusControllerGetEdit")."/".$menu->id }}?return_url={{urlencode(Request::fullUrl())}}'></a>&nbsp;&nbsp;<a
                                                 title='Delete' class='fa fa-trash'
-                                                onclick='{{CRUDBooster::deleteConfirm(route("MenusControllerGetDelete") ."/".$menu->id) }}'
+                                                onclick='{{CMS::deleteConfirm(route("MenusControllerGetDelete") ."/".$menu->id) }}'
                                                 href='javascript:void(0)'></a></span>
                                     <br/><em class="text-muted">
                                         <!-- <small><i class="fa fa-users"></i> &nbsp; {{implode(', ',$privileges)}}</small> -->
@@ -170,7 +170,7 @@
                                                     <span class='pull-right'><a class='fa fa-pencil' title='Edit'
                                                                                 href='{{ route("MenusControllerGetEdit") ."/".$child->id }}?return_url={{urlencode(Request::fullUrl())}}'></a>&nbsp;&nbsp;<a
                                                                 title="Delete" class='fa fa-trash'
-                                                                onclick='{{CRUDBooster::deleteConfirm(route("MenusControllerGetDelete") . "/". $child->id) }}'
+                                                                onclick='{{CMS::deleteConfirm(route("MenusControllerGetDelete") . "/". $child->id) }}'
                                                                 href='javascript:void(0)'></a></span>
                                                     <br/><em class="text-muted">
                                                         <!-- <small><i class="fa fa-users"></i> &nbsp; {{implode(', ',$privileges)}}</small> -->
@@ -200,7 +200,7 @@
                                 <div><i class='{{$menu->icon}}'></i> {{$menu->name}} <span class='pull-right'><a class='fa fa-pencil' title='Edit'
                                                                                                                  href='{{route("MenusControllerGetEdit",["id"=>$menu->id])}}?return_url={{urlencode(Request::fullUrl())}}'></a>&nbsp;&nbsp;<a
                                                 title='Delete' class='fa fa-trash'
-                                                onclick='{{CRUDBooster::deleteConfirm(route("MenusControllerGetDelete",["id"=>$menu->id]))}}'
+                                                onclick='{{CMS::deleteConfirm(route("MenusControllerGetDelete",["id"=>$menu->id]))}}'
                                                 href='javascript:void(0)'></a></span></div>
                                 <ul>
                                     @if($menu->children)
@@ -210,7 +210,7 @@
                                                                                                                                    title='Edit'
                                                                                                                                    href='{{route("MenusControllerGetEdit",["id"=>$child->id])}}?return_url={{urlencode(Request::fullUrl())}}'></a>&nbsp;&nbsp;<a
                                                                 title="Delete" class='fa fa-trash'
-                                                                onclick='{{CRUDBooster::deleteConfirm(route("MenusControllerGetDelete",["id"=>$child->id]))}}'
+                                                                onclick='{{CMS::deleteConfirm(route("MenusControllerGetDelete",["id"=>$child->id]))}}'
                                                                 href='javascript:void(0)'></a></span></div>
                                             </li>
                                         @endforeach
@@ -233,10 +233,10 @@
                     Add Menu
                 </div>
                 <div class="panel-body">
-                    <form class='form-horizontal' method='post' id="form" enctype="multipart/form-data" action='{{CRUDBooster::mainpath("add-save")}}'>
+                    <form class='form-horizontal' method='post' id="form" enctype="multipart/form-data" action='{{CMS::mainpath("add-save")}}'>
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                         <input type='hidden' name='return_url' value='{{Request::fullUrl()}}'/>
-                        @include("crudbooster::default.form_body")
+                        @include("cms::default.form_body")
                         <p align="right"><input type='submit' class='btn btn-primary' value='Add Menu'/></p>
                     </form>
                 </div>

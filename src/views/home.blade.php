@@ -1,4 +1,4 @@
-@extends('crudbooster::admin_template')
+@extends('cms::admin_template')
 @section('content')
 
 

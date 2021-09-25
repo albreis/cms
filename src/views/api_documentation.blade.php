@@ -1,11 +1,11 @@
-@extends('crudbooster::admin_template')
+@extends('cms::admin_template')
 
 @section('content')
 
     <ul class="nav nav-tabs">
-        <li class="active"><a href="{{ CRUDBooster::mainpath() }}"><i class='fa fa-file'></i> API Documentation</a></li>
-        <li><a href="{{ CRUDBooster::mainpath('screet-key') }}"><i class='fa fa-key'></i> API Secret Key</a></li>
-        <li><a href="{{ CRUDBooster::mainpath('generator') }}"><i class='fa fa-cog'></i> API Generator</a></li>
+        <li class="active"><a href="{{ CMS::mainpath() }}"><i class='fa fa-file'></i> API Documentation</a></li>
+        <li><a href="{{ CMS::mainpath('screet-key') }}"><i class='fa fa-key'></i> API Secret Key</a></li>
+        <li><a href="{{ CMS::mainpath('generator') }}"><i class='fa fa-cog'></i> API Generator</a></li>
     </ul>
 
     <div class='box'>
@@ -37,7 +37,7 @@
                     })
 
                     function deleteApi(id) {
-                        var url = "{{url(config('crudbooster.ADMIN_PATH').'/api_generator/delete-api')}}/" + id;
+                        var url = "{{url(config('cms.ADMIN_PATH').'/api_generator/delete-api')}}/" + id;
                         swal({
                             title: "Are you sure?",
                             text: "You will not be able to recover this data!",
@@ -71,7 +71,7 @@
                     <th>API Name
                         <span class='pull-right'>
                             <a class="btn btn-xs btn-primary" target="_blank" href="{{ url('api-documentation') }}"><i class="fa fa-globe"></i> Public Documentation</a>
-                      <a class='btn btn-xs btn-warning' target="_blank" href='{{CRUDBooster::mainpath("download-postman")}}'>Export For POSTMAN <sup>Beta</sup></a>
+                      <a class='btn btn-xs btn-warning' target="_blank" href='{{CMS::mainpath("download-postman")}}'>Export For POSTMAN <sup>Beta</sup></a>
                     </span>
                     </th>
                     <th width='2%'>Type</th>
@@ -183,7 +183,7 @@
                             <a href='javascript:void(0)' title='API {{$ac->nama}}' style='color:#009fe3' class='link_name_api'><?=$api->nama;?></a> &nbsp;
                             <sup>
                                 <a title='Delete this API' onclick="deleteApi({{$api->id}})" href="javascript:void(0)"><i class='fa fa-trash'></i></a>
-                                &nbsp; <a title='Edit This API' href="{{url(config('crudbooster.ADMIN_PATH').'/api_generator/edit-api').'/'.$api->id}}"><i
+                                &nbsp; <a title='Edit This API' href="{{url(config('cms.ADMIN_PATH').'/api_generator/edit-api').'/'.$api->id}}"><i
                                             class='fa fa-pencil'></i></a>
                             </sup>
                             <div class='detail_api' style='display:none'>

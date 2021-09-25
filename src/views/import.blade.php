@@ -1,11 +1,11 @@
-@extends('crudbooster::admin_template')
+@extends('cms::admin_template')
 @section('content')
 
 
     @if($button_show_data || $button_reload_data || $button_new_data || $button_delete_data || $index_button || $columns)
         <div id='box-actionmenu' class='box'>
             <div class='box-body'>
-                @include("crudbooster::default.actionmenu")
+                @include("cms::default.actionmenu")
             </div>
         </div>
     @endif
@@ -15,7 +15,7 @@
 
         <ul class='nav nav-tabs'>
             <li style="background:#eeeeee"><a style="color:#111"
-                                              onclick="if(confirm('Are you sure want to leave ?')) location.href='{{ CRUDBooster::mainpath("import-data") }}'"
+                                              onclick="if(confirm('Are you sure want to leave ?')) location.href='{{ CMS::mainpath("import-data") }}'"
                                               href='javascript:;'><i class='fa fa-download'></i> Upload a File &raquo;</a></li>
             <li style="background:#eeeeee"><a style="color:#111" href='#'><i class='fa fa-cogs'></i> Adjustment &raquo;</a></li>
             <li style="background:#ffffff" class='active'><a style="color:#111" href='#'><i class='fa fa-cloud-download'></i> Importing &raquo;</a></li>
@@ -46,7 +46,7 @@
 
                             var int_prog = setInterval(function () {
 
-                                $.post("{{ CRUDBooster::mainpath('do-import-chunk?file='.Request::get('file')) }}", {resume: 1}, function (resp) {
+                                $.post("{{ CMS::mainpath('do-import-chunk?file='.Request::get('file')) }}", {resume: 1}, function (resp) {
                                     console.log(resp.progress);
                                     $('#progress-import').css('width', resp.progress + '%');
                                     $('#status-import').html("<i class='fa fa-spin fa-spinner'></i> Please wait importing... (" + resp.progress + "%)");
@@ -60,7 +60,7 @@
 
                             }, 2500);
 
-                            $.post("{{ CRUDBooster::mainpath('do-import-chunk').'?file='.Request::get('file') }}", function (resp) {
+                            $.post("{{ CMS::mainpath('do-import-chunk').'?file='.Request::get('file') }}", function (resp) {
                                 if (resp.status == true) {
                                     $('#progress-import').css('width', '100%');
                                     $('#progress-import').attr('aria-valuenow', 100);
@@ -80,8 +80,8 @@
 
             <div class="box-footer" id='upload-footer' style="display:none">
                 <div class='pull-right'>
-                    <a href='{{ CRUDBooster::mainpath("import-data") }}' class='btn btn-default'><i class='fa fa-upload'></i> Upload Other File</a>
-                    <a href='{{CRUDBooster::mainpath()}}' class='btn btn-success'>Finish</a>
+                    <a href='{{ CMS::mainpath("import-data") }}' class='btn btn-default'><i class='fa fa-upload'></i> Upload Other File</a>
+                    <a href='{{CMS::mainpath()}}' class='btn btn-success'>Finish</a>
                 </div>
             </div><!-- /.box-footer-->
 
@@ -92,7 +92,7 @@
 
         <ul class='nav nav-tabs'>
             <li style="background:#eeeeee"><a style="color:#111"
-                                              onclick="if(confirm('Are you sure want to leave ?')) location.href='{{ CRUDBooster::mainpath("import-data") }}'"
+                                              onclick="if(confirm('Are you sure want to leave ?')) location.href='{{ CMS::mainpath("import-data") }}'"
                                               href='javascript:;'><i class='fa fa-download'></i> Upload a File &raquo;</a></li>
             <li style="background:#ffffff" class='active'><a style="color:#111" href='#'><i class='fa fa-cogs'></i> Adjustment &raquo;</a></li>
             <li style="background:#eeeeee"><a style="color:#111" href='#'><i class='fa fa-cloud-download'></i> Importing &raquo;</a></li>
@@ -111,7 +111,7 @@
             if ($data_sub_module) {
                 $action_path = Route($data_sub_module->controller."GetIndex");
             } else {
-                $action_path = CRUDBooster::mainpath();
+                $action_path = CMS::mainpath();
             }
 
             $action = $action_path."/done-import?file=".Request::get('file').'&import=1';
@@ -199,7 +199,7 @@
 
                 <div class="box-footer">
                     <div class='pull-right'>
-                        <a onclick="if(confirm('Are you sure want to leave ?')) location.href='{{ CRUDBooster::mainpath("import-data") }}'" href='javascript:;'
+                        <a onclick="if(confirm('Are you sure want to leave ?')) location.href='{{ CMS::mainpath("import-data") }}'" href='javascript:;'
                            class='btn btn-default'>Cancel</a>
                         <input type='submit' class='btn btn-primary' name='submit' onclick='return check_selected_column()' value='Import Data'/>
                     </div>
@@ -213,7 +213,7 @@
     @if(!Request::get('file'))
         <ul class='nav nav-tabs'>
             <li style="background:#ffffff" class='active'><a style="color:#111"
-                                                             onclick="if(confirm('Are you sure want to leave ?')) location.href='{{ CRUDBooster::mainpath("import-data") }}'"
+                                                             onclick="if(confirm('Are you sure want to leave ?')) location.href='{{ CMS::mainpath("import-data") }}'"
                                                              href='javascript:;'><i class='fa fa-download'></i> Upload a File &raquo;</a></li>
             <li style="background:#eeeeee"><a style="color:#111" href='#'><i class='fa fa-cogs'></i> Adjustment &raquo;</a></li>
             <li style="background:#eeeeee"><a style="color:#111" href='#'><i class='fa fa-cloud-download'></i> Importing &raquo;</a></li>
@@ -232,7 +232,7 @@
             if ($data_sub_module) {
                 $action_path = Route($data_sub_module->controller."GetIndex");
             } else {
-                $action_path = CRUDBooster::mainpath();
+                $action_path = CMS::mainpath();
             }
 
             $action = $action_path."/do-upload-import-data";
@@ -261,7 +261,7 @@
 
                 <div class="box-footer">
                     <div class='pull-right'>
-                        <a href='{{ CRUDBooster::mainpath() }}' class='btn btn-default'>Cancel</a>
+                        <a href='{{ CMS::mainpath() }}' class='btn btn-default'>Cancel</a>
                         <input type='submit' class='btn btn-primary' name='submit' value='Upload'/>
                     </div>
                 </div><!-- /.box-footer-->

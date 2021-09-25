@@ -7,10 +7,10 @@ $type = @$form['type'] ?: 'text';
 if (in_array($type, $asset_already)) continue;
 
 ?>
-@if(file_exists(base_path('/vendor/crocodicstudio/crudbooster/src/views/default/type_components/'.$type.'/asset.blade.php')))
-    @include('crudbooster::default.type_components.'.$type.'.asset')
-@elseif(file_exists(resource_path('views/vendor/crudbooster/type_components/'.$type.'/asset.blade.php')))
-    @include('vendor.crudbooster.type_components.'.$type.'.asset')
+@if(file_exists(base_path('/vendor/albreis/cms/src/views/default/type_components/'.$type.'/asset.blade.php')))
+    @include('cms::default.type_components.'.$type.'.asset')
+@elseif(file_exists(resource_path('views/vendor/cms/type_components/'.$type.'/asset.blade.php')))
+    @include('vendor.cms.type_components.'.$type.'.asset')
 @endif
 <?php
 $asset_already[] = $type;
@@ -59,8 +59,8 @@ $asset_already[] = $type;
             array_walk($join_arr, 'trim');
             $join_table = $join_arr[0];
             $join_title = $join_arr[1];
-            $join_table_pk = CB::pk($join_table);
-            $join_fk = CB::getForeignKey($table, $join_table);
+            $join_table_pk = CMSHelper::pk($join_table);
+            $join_fk = CMSHelper::getForeignKey($table, $join_table);
             $join_query_[$join_table] = DB::table($join_table)->select($join_title)->where($join_table_pk, $row->{$join_fk})->first();
             $value = @$join_query_[$join_table]->{$join_title};
         }
@@ -71,29 +71,29 @@ $asset_already[] = $type;
         $disabled = (@$form['disabled']) ? "disabled" : "";
         $jquery = @$form['jquery'];
         $placeholder = (@$form['placeholder']) ? "placeholder='".$form['placeholder']."'" : "";
-        $file_location = base_path('vendor/crocodicstudio/crudbooster/src/views/default/type_components/'.$type.'/component_detail.blade.php');
-        $user_location = resource_path('views/vendor/crudbooster/type_components/'.$type.'/component_detail.blade.php');
+        $file_location = base_path('vendor/albreis/cms/src/views/default/type_components/'.$type.'/component_detail.blade.php');
+        $user_location = resource_path('views/vendor/cms/type_components/'.$type.'/component_detail.blade.php');
 
         ?>
 
         @if(file_exists($file_location))
             <?php $containTR = (substr(trim(file_get_contents($file_location)), 0, 4) == '<tr>') ? TRUE : FALSE;?>
             @if($containTR)
-                @include('crudbooster::default.type_components.'.$type.'.component_detail')
+                @include('cms::default.type_components.'.$type.'.component_detail')
             @else
                 <tr>
                     <td>{{$form['label']}}</td>
-                    <td>@include('crudbooster::default.type_components.'.$type.'.component_detail')</td>
+                    <td>@include('cms::default.type_components.'.$type.'.component_detail')</td>
                 </tr>
             @endif
         @elseif(file_exists($user_location))
             <?php $containTR = (substr(trim(file_get_contents($user_location)), 0, 4) == '<tr>') ? TRUE : FALSE;?>
             @if($containTR)
-                @include('vendor.crudbooster.type_components.'.$type.'.component_detail')
+                @include('vendor.cms.type_components.'.$type.'.component_detail')
             @else
                 <tr>
                     <td>{{$form['label']}}</td>
-                    <td>@include('vendor.crudbooster.type_components.'.$type.'.component_detail')</td>
+                    <td>@include('vendor.cms.type_components.'.$type.'.component_detail')</td>
                 </tr>
             @endif
         @else

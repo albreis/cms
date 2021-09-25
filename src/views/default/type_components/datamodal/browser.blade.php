@@ -1,14 +1,14 @@
 <!-- Bootstrap 3.3.2 -->
-<link href="{{ asset("vendor/crudbooster/assets/adminlte/bootstrap/css/bootstrap.min.css") }}" rel="stylesheet" type="text/css"/>
+<link href="{{ asset("vendor/cms/assets/adminlte/bootstrap/css/bootstrap.min.css") }}" rel="stylesheet" type="text/css"/>
 <!-- Font Awesome Icons -->
-<link href="{{asset("vendor/crudbooster/assets/adminlte/font-awesome/css")}}/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+<link href="{{asset("vendor/cms/assets/adminlte/font-awesome/css")}}/font-awesome.min.css" rel="stylesheet" type="text/css"/>
 <!-- Ionicons -->
-<link href="{{asset("vendor/crudbooster/ionic/css/ionicons.min.css")}}" rel="stylesheet" type="text/css"/>
+<link href="{{asset("vendor/cms/ionic/css/ionicons.min.css")}}" rel="stylesheet" type="text/css"/>
 <!-- Theme style -->
-<link href="{{ asset("vendor/crudbooster/assets/adminlte/dist/css/AdminLTE.min.css")}}" rel="stylesheet" type="text/css"/>
-<link href="{{ asset("vendor/crudbooster/assets/adminlte/dist/css/skins/_all-skins.min.css")}}" rel="stylesheet" type="text/css"/>
+<link href="{{ asset("vendor/cms/assets/adminlte/dist/css/AdminLTE.min.css")}}" rel="stylesheet" type="text/css"/>
+<link href="{{ asset("vendor/cms/assets/adminlte/dist/css/skins/_all-skins.min.css")}}" rel="stylesheet" type="text/css"/>
 
-@include('crudbooster::admin_template_plugins')
+@include('cms::admin_template_plugins')
 
 <?php
 $name = Request::get('name_column');
@@ -18,7 +18,7 @@ if (count($coloms_alias) < 2 && isset($columns)) {
 }
 ?>
 <form method='get' action="">
-    {!! CRUDBooster::getUrlParameters(['q']) !!}
+    {!! CMS::getUrlParameters(['q']) !!}
     <input type="text" placeholder="{{cbLang('datamodal_search_and_enter')}}" name="q" title="{{cbLang('datamodal_enter_to_search')}}"
            value="{{Request::get('q')}}" class="form-control">
 </form>

@@ -20,7 +20,7 @@
             <span class="input-group-btn">
         <button class="btn btn-primary" onclick="showModal{{$name}}()" type="button"><i class='fa fa-search'></i> {{cbLang('datamodal_browse_data')}}</button>
                 <?php if(strlen($form['datamodal_module_path']) > 1){ ?>
-                <a class="btn btn-info" href="{{CRUDBooster::adminPath()}}/{{$form['datamodal_module_path']}}" target="_blank"><i
+                <a class="btn btn-info" href="{{CMS::adminPath()}}/{{$form['datamodal_module_path']}}" target="_blank"><i
                             class='fa fa-edit'></i> {{$form['label']}}</a>
                 <?php } ?>
       </span>
@@ -33,7 +33,7 @@
 
 @push('bottom')
     <script type="text/javascript">
-        var url_{{$name}} = "{{CRUDBooster::mainpath('modal-data')}}?table={{$form['datamodal_table']}}&columns=id,{{$form['datamodal_columns']}}&name_column={{$name}}&where={{urlencode($form['datamodal_where'])}}&select_to={{ urlencode($form['datamodal_select_to']) }}&columns_name_alias={{ urlencode($form['datamodal_columns_alias']) }}&paginate={{urlencode($form['datamodal_paginate'])}}";
+        var url_{{$name}} = "{{CMS::mainpath('modal-data')}}?table={{$form['datamodal_table']}}&columns=id,{{$form['datamodal_columns']}}&name_column={{$name}}&where={{urlencode($form['datamodal_where'])}}&select_to={{ urlencode($form['datamodal_select_to']) }}&columns_name_alias={{ urlencode($form['datamodal_columns_alias']) }}&paginate={{urlencode($form['datamodal_paginate'])}}";
 
         function showModal{{$name}}() {
             $('#iframe-modal-{{$name}}').attr('src', url_{{$name}});

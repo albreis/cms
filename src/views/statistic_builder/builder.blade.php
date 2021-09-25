@@ -1,6 +1,6 @@
-@extends('crudbooster::statistic_builder.layout')
+@extends('cms::statistic_builder.layout')
 @section('content')
 
-    @include('crudbooster::statistic_builder.index')
+    @include('cms::statistic_builder.index')
 
 @endsection
