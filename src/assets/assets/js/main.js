@@ -18,8 +18,8 @@
 			
 			$("#sound_beep").remove();
 			$('body').append('<audio id="sound_beep" style="display:none" autoplay>'+
-  			+'<source src="'+ASSET_URL+'/vendor/crudbooster/assets/sound/bell_ring.ogg" type="audio/ogg">'
-  			+'<source src="'+ASSET_URL+'/vendor/crudbooster/assets/sound/bell_ring.mp3" type="audio/mpeg">'
+  			+'<source src="'+ASSET_URL+'/vendor/cms/assets/sound/bell_ring.ogg" type="audio/ogg">'
+  			+'<source src="'+ASSET_URL+'/vendor/cms/assets/sound/bell_ring.mp3" type="audio/mpeg">'
 			+'Your browser does not support the audio element.</audio>');
 		}
 
