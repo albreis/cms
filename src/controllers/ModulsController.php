@@ -448,6 +448,7 @@ class ModulsController extends CBController
         $file_controller .= "\t\t\t".trim($rraw[1]);
 
         file_put_contents(app_path('Http/Controllers/'.$row->controller.'.php'), $file_controller);
+        chmod(app_path('Http/Controllers/'.$row->controller.'.php'), 0664);
 
         return redirect(Route("ModulsControllerGetStep3")."/".$id);
     }
@@ -574,6 +575,7 @@ class ModulsController extends CBController
 
         //CREATE FILE CONTROLLER
         file_put_contents(app_path('Http/Controllers/'.$row->controller.'.php'), $file_controller);
+        chmod(app_path('Http/Controllers/'.$row->controller.'.php'), 0664);
 
         return redirect(Route("ModulsControllerGetStep4")."/".$id);
     }
@@ -649,6 +651,7 @@ class ModulsController extends CBController
         $file_controller .= "\t\t\t".trim($rraw[1]);
 
         file_put_contents(app_path('Http/Controllers/'.$row->controller.'.php'), $file_controller);
+        chmod(app_path('Http/Controllers/'.$row->controller.'.php'), 0664);
 
         return redirect()->route('ModulsControllerGetIndex')->with(['message' => cbLang('alert_update_data_success'), 'message_type' => 'success']);
     }
