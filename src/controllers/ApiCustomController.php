@@ -287,6 +287,7 @@ class ApiCustomController extends CBController
         $a['aksi'] = $posts['aksi'];
         $a['permalink'] = g('permalink');
         $a['method_type'] = g('method_type');
+        $a['controller'] = g('controller');
 
         $params_name = g('params_name');
         $params_type = g('params_type');
@@ -333,15 +334,67 @@ class ApiCustomController extends CBController
         $a['keterangan'] = g('keterangan');
 
         if (Request::get('id')) {
+
+            $old = DB::table('cms_apicustom')->find(Request::get('id'));
+                
+            $oldControllerName = ucwords(str_replace('/', ' ', $old->permalink));
+            $oldControllerName = str_replace(' ', '/', $oldControllerName);
+            $oldControllerName = ucwords(str_replace('_', ' ', $oldControllerName));
+            $oldControllerName = str_replace(' ', '', $oldControllerName).'Controller'.ucwords($old->method_type);
+
+            if($a['controller']) {
+                $controllerName = $a['controller'];
+            }
+            else {
+                $controllerName = ucwords(str_replace('/', ' ', $a['permalink']));
+                $controllerName = str_replace(' ', '/', $controllerName);
+                $controllerName = ucwords(str_replace('_', ' ', $controllerName));
+                $controllerName = str_replace(' ', '', $controllerName).'Controller'.ucwords($a['method_type']);
+            }
+
+            $controllerName = preg_replace('/[^\/\w\d]+/', '', $controllerName);
+
+            if(!file_exists(dirname(app_path("Http/Controllers/Api/{$controllerName}.php")))) {
+                mkdir(dirname(app_path("Http/Controllers/Api/{$controllerName}.php")), 0775, true);
+            }
+
+            if("Http/Controllers/Api/{$oldControllerName}.php" != "Http/Controllers/Api/{$controllerName}.php") {
+                move_uploaded_file(app_path("Http/Controllers/Api/{$oldControllerName}.php"), app_path("Http/Controllers/Api/{$controllerName}.php"));
+            }
+
             DB::table('cms_apicustom')->where('id', g('id'))->update($a);
+            if(!file_exists(app_path("Http/Controllers/Api/{$controllerName}.php"))) {
+                CRUDBooster::generateAPI($controllerName, $a['tabel'], $a['permalink'], $a['method_type']);
+            }
         } else {
 
-            $controllerName = ucwords(str_replace('_', ' ', $a['permalink']));
-            $controllerName = str_replace(' ', '', $controllerName);
+            if($a['controller']) {
+                $controllerName = $a['controller'].'Controller'.ucwords($a['method_type']);
+            }
+            else {
+                $controllerName = ucwords(str_replace('/', ' ', $a['permalink']));
+                $controllerName = str_replace(' ', '/', $controllerName);
+                $controllerName = ucwords(str_replace('_', ' ', $controllerName));
+                $controllerName = str_replace(' ', '', $controllerName).'Controller'.ucwords($a['method_type']);
+                $controllerName = preg_replace('/[^\/\w\d]+/', '', $controllerName);
+            }
+            $a['controller'] = $controllerName;
             CRUDBooster::generateAPI($controllerName, $a['tabel'], $a['permalink'], $a['method_type']);
+
 
             DB::table('cms_apicustom')->insert($a);
         }
+
+        $routes = DB::table('cms_apicustom')->limit(100)->get();  
+        $apis = [];
+        foreach($routes as $route) {
+            if(empty($route->controller)) continue;
+            $cname = str_replace('/', '\\', $route->controller);
+            $route->permalink = preg_replace('/\[([^\/]+)\]/', '$1', $route->permalink);
+            $apis[] = "Route::{$route->method_type}('api/{$route->permalink}', '{$cname}@execute_api');";
+        }
+
+        file_put_contents(base_path('routes/apicustom.php'), "<?php\n" . implode("\n", $apis));
 
         return redirect(CRUDBooster::mainpath())->with(['message' => 'Yeay, your api has been saved successfully !', 'message_type' => 'success']);
     }
@@ -351,10 +404,19 @@ class ApiCustomController extends CBController
         $this->cbLoader();
         $row = DB::table('cms_apicustom')->where('id', $id)->first();
         DB::table('cms_apicustom')->where('id', $id)->delete();
+        
+        @unlink(app_path("Http/Controllers/Api/{$row->controller}.php"));
+        
+        $routes = DB::table('cms_apicustom')->limit(100)->get();  
+        $apis = [];
+        foreach($routes as $route) {
+            if(empty($route->controller)) continue;
+            $cname = str_replace('/', '\\', $route->controller);
+            $route->permalink = preg_replace('/\[([^\/]+)\]/', '$1', $route->permalink);
+            $apis[] = "Route::{$route->method_type}('api/{$route->permalink}', '{$cname}@execute_api');";
+        }
 
-        $controllername = ucwords(str_replace('_', ' ', $row->permalink));
-        $controllername = str_replace(' ', '', $controllername);
-        @unlink(base_path("app/Http/Controllers/Api".$controllername."Controller.php"));
+        file_put_contents(base_path('routes/apicustom.php'), "<?php\n" . implode("\n", $apis));
 
         return response()->json(['status' => 1]);
     }
