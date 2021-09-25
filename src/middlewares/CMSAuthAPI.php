@@ -1,11 +1,11 @@
 <?php
 
-namespace crocodicstudio\crudbooster\middlewares;
+namespace albreis\cms\middlewares;
 
 use Closure;
-use crocodicstudio\crudbooster\helpers\CRUDBooster;
+use albreis\cms\helpers\CMS;
 
-class CBAuthAPI
+class CMSAuthAPI
 {
     /**
      * Handle an incoming request.
@@ -18,7 +18,7 @@ class CBAuthAPI
     {
 
 
-        CRUDBooster::authAPI();
+        CMS::authAPI();
 
         return $next($request);
     }

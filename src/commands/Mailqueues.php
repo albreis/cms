@@ -1,7 +1,7 @@
-<?php namespace crocodicstudio\crudbooster\commands;
+<?php namespace albreis\cms\commands;
 
 use Cache;
-use crocodicstudio\crudbooster\helpers\CRUDBooster;
+use albreis\cms\helpers\CMS;
 use DB;
 use Illuminate\Console\Command;
 use Request;
@@ -44,7 +44,7 @@ class Mailqueues extends Command
 
         foreach ($queues as $q) {
             if (filter_var($q->email_recipient, FILTER_VALIDATE_EMAIL) !== false) {
-                CRUDBooster::sendEmailQueue($q);
+                CMS::sendEmailQueue($q);
                 $this->comment('Email send -> '.$q->subject);
             }
             DB::table('mailqueues')->where('id', $q->id)->delete();

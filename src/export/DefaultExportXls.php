@@ -1,7 +1,7 @@
 <?php
 
 
-namespace crocodicstudio\crudbooster\export;
+namespace albreis\cms\export;
 
 
 use Illuminate\Contracts\View\View;
@@ -18,6 +18,6 @@ class DefaultExportXls implements FromView
 
     public function view(): View
     {
-        return view("crudbooster::export",$this->data);
+        return view("cms::export",$this->data);
     }
 }

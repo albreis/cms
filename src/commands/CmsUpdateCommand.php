@@ -1,28 +1,28 @@
-<?php namespace crocodicstudio\crudbooster\commands;
+<?php namespace albreis\cms\commands;
 
 use App;
 use Cache;
-use CRUDBooster;
+use CMS;
 use DB;
 use Illuminate\Console\Command;
 use Request;
 use Symfony\Component\Process\Process;
 
-class CrudboosterInstallationCommand extends Command
+class CmsUpdateCommand extends Command
 {
     /**
      * The console command name.
      *
      * @var string
      */
-    protected $name = 'crudbooster:install';
+    protected $name = 'cms:update';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'CRUDBooster Installation Command';
+    protected $description = 'CMS Update Command';
 
     /**
      * Execute the console command.
@@ -33,43 +33,49 @@ class CrudboosterInstallationCommand extends Command
     {
 
         $this->header();
-
         $this->checkRequirements();
 
-        $this->info('Installing: ');
+        $this->info('Updating: ');
 
-        if ($this->confirm('Do you have setting the database configuration at .env ?')) {
-
-            if (! file_exists(public_path('vendor'))) {
-                mkdir(public_path('vendor'), 0777);
-            }
-
-            $this->info('Publishing crudbooster assets...');
-            $this->call('vendor:publish', ['--provider' => 'crocodicstudio\crudbooster\CRUDBoosterServiceProvider']);
-
-            $this->info('Dumping the autoloaded files and reloading all new files...');
-            $composer = $this->findComposer();
-
-            $process = (app()->version() >= 7.0)
-                ? new Process([$composer.' dumpautoload'])
-                : new Process($composer.' dumpautoload');
-
-            $process->setWorkingDirectory(base_path())->run();
-
-            $this->info('Migrating database...');
-
-            $this->call('migrate');
-            $this->call('db:seed', ['--class' => 'CBSeeder']);
-            $this->call('config:clear');
-            if (app()->version() < 5.6) {
-                $this->call('optimize');
-            }
-
-            $this->info('Installing CRUDBooster Is Completed ! Thank You :)');
-        } else {
-            $this->info('Setup Aborted !');
-            $this->info('Please setting the database configuration for first !');
+        if (! file_exists(public_path('vendor'))) {
+            mkdir(public_path('vendor'), 0777);
         }
+
+        $this->info('Publishing CMS needs file...');
+        $this->call('vendor:publish');
+        $this->call('vendor:publish', ['--tag' => 'cb_migration', '--force' => true]);
+        $this->call('vendor:publish', ['--tag' => 'cb_lfm', '--force' => true]);
+        $this->call('vendor:publish', ['--tag' => 'cb_localization', '--force' => true]);
+
+        $configLFM = config_path('lfm.php');
+        $configLFM = file_get_contents($configLFM);
+        $configLFMModified = str_replace("['web','auth']", "['web','\albreis\cms\middlewares\CMSBackend']", $configLFM);
+        $configLFMModified = str_replace('Unisharp\Laravelfilemanager\Handlers\ConfigHandler::class', 'function() {return Session::get("admin_id");}', $configLFMModified);
+        $configLFMModified = str_replace('auth()->user()->id', 'Session::get("admin_id")', $configLFMModified);
+        $configLFMModified = str_replace("'alphanumeric_filename' => false", "'alphanumeric_filename' => true", $configLFMModified);
+        $configLFMModified = str_replace("'alphanumeric_directory' => false", "'alphanumeric_directory' => true", $configLFMModified);
+        $configLFMModified = str_replace("'alphanumeric_directory' => false", "'alphanumeric_directory' => true", $configLFMModified);
+        $configLFMModified = str_replace("'base_directory' => 'public'", "'base_directory' => 'storage/app'", $configLFMModified);
+        $configLFMModified = str_replace("'images_folder_name' => 'photos'", "'images_folder_name' => 'uploads'", $configLFMModified);
+        $configLFMModified = str_replace("'files_folder_name'  => 'files'", "'files_folder_name'  => 'uploads'", $configLFMModified);
+        file_put_contents(config_path('lfm.php'), $configLFMModified);
+        chmod(config_path('lfm.php'), 0664);
+
+        $this->info('Dumping the autoloaded files and reloading all new files...');
+        $composer = $this->findComposer();
+        $process = new Process($composer.' dumpautoload');
+        $process->setWorkingDirectory(base_path())->run();
+
+        $this->info('Migrating database...');
+        $this->call('migrate');
+
+        $this->call('db:seed', ['--class' => 'CMSSeeder']);
+
+        $this->info('Clearing Cache...');
+        Cache::flush();
+
+        $this->info('Clearing config cache...');
+        $this->call('config:clear');
 
         $this->footer();
     }
@@ -84,7 +90,7 @@ class CrudboosterInstallationCommand extends Command
 #  \____/_/ |_|\____/_____/_____/\____/\____/____/\__/\___/_/     
 #                                                                                                                       
 			");
-        $this->info('--------- :===: Thanks for choosing CRUDBooster :==: ---------------');
+        $this->info('--------- :===: Thanks for choosing CMS :==: ---------------');
         $this->info('====================================================================');
     }
 
@@ -94,20 +100,17 @@ class CrudboosterInstallationCommand extends Command
         $system_failed = 0;
         $laravel = app();
 
-        $this->info("Your laravel version: ".$laravel::VERSION);
-        $this->info("---");
-
-        if (version_compare($laravel::VERSION, "6.0", ">=")) {
-            $this->info('Laravel Version (>= 6.x): [Good]');
+        if ($laravel::VERSION >= 5.3) {
+            $this->info('Laravel Version (>= 5.3.*): [Good]');
         } else {
-            $this->info('Laravel Version (>= 6.x): [Bad]');
+            $this->info('Laravel Version (>= 5.3.*): [Bad]');
             $system_failed++;
         }
 
-        if (version_compare(phpversion(), '7.2.0', '>=')) {
-            $this->info('PHP Version (>= 7.2.*): [Good]');
+        if (version_compare(phpversion(), '5.6.0', '>=')) {
+            $this->info('PHP Version (>= 5.6.*): [Good]');
         } else {
-            $this->info('PHP Version (>= 7.2.*): [Bad] Yours: '.phpversion());
+            $this->info('PHP Version (>= 5.6.*): [Bad] Yours: '.phpversion());
             $system_failed++;
         }
 
@@ -161,9 +164,9 @@ class CrudboosterInstallationCommand extends Command
         }
 
         if (is_writable(base_path('public'))) {
-            $this->info('/public dir is writable: [Good]');
+            $this->info('public dir is writable: [Good]');
         } else {
-            $this->info('/public dir is writable: [Bad]');
+            $this->info('public dir is writable: [Bad]');
             $system_failed++;
         }
 
@@ -177,9 +180,9 @@ class CrudboosterInstallationCommand extends Command
     private function footer($success = true)
     {
         $this->info('--');
-        $this->info('Homepage : http://www.crudbooster.com');
-        $this->info('Github : https://github.com/crocodic-studio/crudbooster');
-        $this->info('Documentation : https://github.com/crocodic-studio/crudbooster/blob/master/docs/en/index.md');
+        $this->info('Homepage : http://www.cms.com');
+        $this->info('Github : https://github.com/crocodic-studio/cms');
+        $this->info('Documentation : https://github.com/crocodic-studio/cms/blob/master/docs/en/index.md');
         $this->info('====================================================================');
         if ($success == true) {
             $this->info('------------------- :===: Completed !! :===: ------------------------');

@@ -1,9 +1,9 @@
-<?php namespace crocodicstudio\crudbooster\controllers;
+<?php namespace albreis\cms\controllers;
 
 use Illuminate\Support\Facades\Excel;
 use Illuminate\Support\Facades\PDF;
 
-class LogsController extends CBController
+class LogsController extends CMSController
 {
     public function cbInit()
     {
@@ -20,7 +20,7 @@ class LogsController extends CBController
         $this->col = [];
         $this->col[] = ["label" => "Time Access", "name" => "created_at"];
         $this->col[] = ["label" => "IP Address", "name" => "ipaddress"];
-        $this->col[] = ["label" => "User", "name" => "id_cms_users", "join" => config('crudbooster.USER_TABLE').",name"];
+        $this->col[] = ["label" => "User", "name" => "id_cms_users", "join" => config('cms.USER_TABLE').",name"];
         $this->col[] = ["label" => "Description", "name" => "description"];
 
         $this->form = [];
@@ -32,7 +32,7 @@ class LogsController extends CBController
             "label" => "User",
             "name" => "id_cms_users",
             "type" => "select",
-            "datatable" => config('crudbooster.USER_TABLE').",name",
+            "datatable" => config('cms.USER_TABLE').",name",
             "readonly" => true,
         ];
         $this->form[] = ["label" => "Description", "name" => "description", "readonly" => true];

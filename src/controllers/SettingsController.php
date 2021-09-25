@@ -1,6 +1,6 @@
-<?php namespace crocodicstudio\crudbooster\controllers;
+<?php namespace albreis\cms\controllers;
 
-use CRUDBooster;
+use CMS;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Excel;
@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\PDF;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Storage;
 
-class SettingsController extends CBController
+class SettingsController extends CMSController
 {
     public function cbInit()
     {
@@ -68,39 +68,39 @@ class SettingsController extends CBController
     {
         $this->cbLoader();
 
-        if (! CRUDBooster::isSuperadmin()) {
-            CRUDBooster::insertLog(cbLang("log_try_view", ['name' => 'Setting', 'module' => 'Setting']));
-            CRUDBooster::redirect(CRUDBooster::adminPath(), cbLang('denied_access'));
+        if (! CMS::isSuperadmin()) {
+            CMS::insertLog(cbLang("log_try_view", ['name' => 'Setting', 'module' => 'Setting']));
+            CMS::redirect(CMS::adminPath(), cbLang('denied_access'));
         }
 
         $data['page_title'] = urldecode(Request::get('group'));
 
-        return view('crudbooster::setting', $data);
+        return view('cms::setting', $data);
     }
 
     function hook_before_edit(&$posdata, $id)
     {
-        $this->return_url = CRUDBooster::mainpath("show")."?group=".$posdata['group_setting'];
+        $this->return_url = CMS::mainpath("show")."?group=".$posdata['group_setting'];
     }
 
     function getDeleteFileSetting()
     {
         $id = g('id');
-        $row = CRUDBooster::first('cms_settings', $id);
+        $row = CMS::first('cms_settings', $id);
         Cache::forget('setting_'.$row->name);
         if (Storage::exists($row->content)) {
             Storage::delete($row->content);
         }
         DB::table('cms_settings')->where('id', $id)->update(['content' => null]);
-        CRUDBooster::redirect(Request::server('HTTP_REFERER'), cbLang('alert_delete_data_success'), 'success');
+        CMS::redirect(Request::server('HTTP_REFERER'), cbLang('alert_delete_data_success'), 'success');
     }
 
     function postSaveSetting()
     {
 
-        if (! CRUDBooster::isSuperadmin()) {
-            CRUDBooster::insertLog(cbLang("log_try_view", ['name' => 'Setting', 'module' => 'Setting']));
-            CRUDBooster::redirect(CRUDBooster::adminPath(), cbLang('denied_access'));
+        if (! CMS::isSuperadmin()) {
+            CMS::insertLog(cbLang("log_try_view", ['name' => 'Setting', 'module' => 'Setting']));
+            CMS::redirect(CMS::adminPath(), cbLang('denied_access'));
         }
 
         $group = Request::get('group_setting');
@@ -114,9 +114,9 @@ class SettingsController extends CBController
             if (Request::hasFile($name)) {
 
                 if ($set->content_input_type == 'upload_image') {
-                    CRUDBooster::valid([$name => 'image|max:10000'], 'view');
+                    CMS::valid([$name => 'image|max:10000'], 'view');
                 } else {
-                    CRUDBooster::valid([$name => 'mimes:doc,docx,xls,xlsx,ppt,pptx,pdf,zip,rar|max:20000'], 'view');
+                    CMS::valid([$name => 'mimes:doc,docx,xls,xlsx,ppt,pptx,pdf,zip,rar|max:20000'], 'view');
                 }
 
                 $file = Request::file($name);
@@ -145,7 +145,7 @@ class SettingsController extends CBController
     function hook_before_add(&$arr)
     {
         $arr['name'] = str_slug($arr['label'], '_');
-        $this->return_url = CRUDBooster::mainpath("show")."?group=".$arr['group_setting'];
+        $this->return_url = CMS::mainpath("show")."?group=".$arr['group_setting'];
     }
 
     function hook_after_edit($id)

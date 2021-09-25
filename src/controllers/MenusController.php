@@ -1,15 +1,15 @@
-<?php namespace crocodicstudio\crudbooster\controllers;
+<?php namespace albreis\cms\controllers;
 
-use CRUDBooster;
+use CMS;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Excel;
 use Illuminate\Support\Facades\PDF;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Session;
-use crocodicstudio\crudbooster\fonts\Fontawesome;
+use albreis\cms\fonts\Fontawesome;
 
-class MenusController extends CBController
+class MenusController extends CMSController
 {
     public function cbInit()
     {
@@ -30,22 +30,22 @@ class MenusController extends CBController
         $this->button_export = false;
         $this->button_import = false;
 
-        $id = CRUDBooster::getCurrentId();
+        $id = CMS::getCurrentId();
         if (Request::segment(3) == 'edit') {
             $id = Request::segment(4);
             Session::put('current_row_id', $id);
         }
-        $row = CRUDBooster::first($this->table, $id);
+        $row = CMS::first($this->table, $id);
         $row = (Request::segment(3) == 'edit') ? $row : null;
 
         $id_module = $id_statistic = 0;
 
         if ($row->type == 'Module') {
-            $m = CRUDBooster::first('cms_moduls', ['path' => $row->path]);
+            $m = CMS::first('cms_moduls', ['path' => $row->path]);
             $id_module = $m->id;
         } elseif ($row->type == 'Statistic') {
             $row->path = str_replace('statistic_builder/show/', '', $row->path);
-            $m = CRUDBooster::first('cms_statistics', ['slug' => $row->path]);
+            $m = CMS::first('cms_statistics', ['slug' => $row->path]);
             $id_statistic = $m->id;
         }
 
@@ -202,7 +202,7 @@ class MenusController extends CBController
 
         $fontawesome = Fontawesome::getIcons();
 
-        $custom = view('crudbooster::components.list_icon', compact('fontawesome', 'row'))->render();
+        $custom = view('cms::components.list_icon', compact('fontawesome', 'row'))->render();
         $this->form[] = ['label' => 'Icon', 'name' => 'icon', 'type' => 'custom', 'html' => $custom, 'required' => true];
         $this->form[] = [
             'label' => 'Color',
@@ -239,16 +239,16 @@ class MenusController extends CBController
     {
         $this->cbLoader();
 
-        $module = CRUDBooster::getCurrentModule();
-        if (! CRUDBooster::isView() && $this->global_privilege == false) {
-            CRUDBooster::insertLog(cbLang('log_try_view', ['module' => $module->name]));
-            CRUDBooster::redirect(CRUDBooster::adminPath(), cbLang('denied_access'));
+        $module = CMS::getCurrentModule();
+        if (! CMS::isView() && $this->global_privilege == false) {
+            CMS::insertLog(cbLang('log_try_view', ['module' => $module->name]));
+            CMS::redirect(CMS::adminPath(), cbLang('denied_access'));
         }
 
         $privileges = DB::table('cms_privileges')->get();
 
         $id_cms_privileges = Request::get('id_cms_privileges');
-        $id_cms_privileges = ($id_cms_privileges) ?: CRUDBooster::myPrivilegeId();
+        $id_cms_privileges = ($id_cms_privileges) ?: CMS::myPrivilegeId();
 
         $menu_active = DB::table('cms_menus')->where('parent_id', 0)->where('is_active', 1)->orderby('sorting', 'asc')->get();
 
@@ -272,21 +272,21 @@ class MenusController extends CBController
 
         $page_title = 'Menu Management';
 
-        return view('crudbooster::menus_management', compact('menu_active', 'menu_inactive', 'privileges', 'id_cms_privileges', 'return_url', 'page_title'));
+        return view('cms::menus_management', compact('menu_active', 'menu_inactive', 'privileges', 'id_cms_privileges', 'return_url', 'page_title'));
     }
 
     public function hook_before_add(&$postdata)
     {
         if (! $postdata['id_cms_privileges']) {
-            $postdata['id_cms_privileges'] = CRUDBooster::myPrivilegeId();
+            $postdata['id_cms_privileges'] = CMS::myPrivilegeId();
         }
         $postdata['parent_id'] = 0;
 
         if ($postdata['type'] == 'Statistic') {
-            $stat = CRUDBooster::first('cms_statistics', ['id' => $postdata['statistic_slug']]);
+            $stat = CMS::first('cms_statistics', ['id' => $postdata['statistic_slug']]);
             $postdata['path'] = 'statistic_builder/show/'.$stat->slug;
         } elseif ($postdata['type'] == 'Module') {
-            $stat = CRUDBooster::first('cms_moduls', ['id' => $postdata['module_slug']]);
+            $stat = CMS::first('cms_moduls', ['id' => $postdata['module_slug']]);
             $postdata['path'] = $stat->path;
         }
 
@@ -296,7 +296,7 @@ class MenusController extends CBController
         if ($postdata['is_dashboard'] == 1) {
             //If set dashboard, so unset for first all dashboard
             //DB::table('cms_menus')->where('id_cms_privileges', $postdata['id_cms_privileges'])->where('is_dashboard', 1)->update(['is_dashboard' => 0]);
-            Cache::forget('sidebarDashboard'.CRUDBooster::myPrivilegeId());
+            Cache::forget('sidebarDashboard'.CMS::myPrivilegeId());
         }
     }
 
@@ -306,14 +306,14 @@ class MenusController extends CBController
         if ($postdata['is_dashboard'] == 1) {
             //If set dashboard, so unset for first all dashboard
             //DB::table('cms_menus')->where('id_cms_privileges', $postdata['id_cms_privileges'])->where('is_dashboard', 1)->update(['is_dashboard' => 0]);
-            Cache::forget('sidebarDashboard'.CRUDBooster::myPrivilegeId());
+            Cache::forget('sidebarDashboard'.CMS::myPrivilegeId());
         }
 
         if ($postdata['type'] == 'Statistic') {
-            $stat = CRUDBooster::first('cms_statistics', ['id' => $postdata['statistic_slug']]);
+            $stat = CMS::first('cms_statistics', ['id' => $postdata['statistic_slug']]);
             $postdata['path'] = 'statistic_builder/show/'.$stat->slug;
         } elseif ($postdata['type'] == 'Module') {
-            $stat = CRUDBooster::first('cms_moduls', ['id' => $postdata['module_slug']]);
+            $stat = CMS::first('cms_moduls', ['id' => $postdata['module_slug']]);
             $postdata['path'] = $stat->path;
         }
 

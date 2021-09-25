@@ -1,22 +1,22 @@
-# :rocket: CRUDBOOSTER - Laravel CRUD Generator
-[![Latest Stable Version](https://poser.pugx.org/crocodicstudio/crudbooster/v/stable)](https://packagist.org/packages/crocodicstudio/crudbooster)
-[![Total Downloads](https://poser.pugx.org/crocodicstudio/crudbooster/downloads)](https://packagist.org/packages/crocodicstudio/crudbooster)
-[![License](https://poser.pugx.org/crocodicstudio/crudbooster/license)](https://packagist.org/packages/crocodicstudio/crudbooster)
+# :rocket: Albreis CMS - Laravel CRUD Generator
+[![Latest Stable Version](https://poser.pugx.org/albreis/cms/v/stable)](https://packagist.org/packages/albreis/cms)
+[![Total Downloads](https://poser.pugx.org/albreis/cms/downloads)](https://packagist.org/packages/albreis/cms)
+[![License](https://poser.pugx.org/albreis/cms/license)](https://packagist.org/packages/albreis/cms)
 
 > Laravel CRUD Generator, Make a Web Application Just In Minutes, Even With Less Code and fewer Steps !
 
-# About CRUDBooster
-CRUDBooster is a Laravel CRUD Generator. With a new concept of scaffolding, very easy for the beginner and professional. It's easy to use, easy to custom, and very flexible. Don't limit your mind, CRUDBooster gives us a true flexibility to develop an app. You can utilize its built in CRUD Generator or even you just need for your master data only.
+# About Albreis CMS
+Albreis CMS is a Laravel CRUD Generator. With a new concept of scaffolding, very easy for the beginner and professional. It's easy to use, easy to custom, and very flexible. Don't limit your mind, Albreis CMS gives us a true flexibility to develop an app. You can utilize its built in CRUD Generator or even you just need for your master data only.
 
 ## Let's Get Started
 ### [Installation](/docs/en/installation.md)
 ### [Documentation](/docs/en/index.md)
 
 ## Support
-All issues, bugs or help are in one place, in [CRUDBoster Issues](https://github.com/crocodic-studio/crudbooster/issues). To request help or report a problem, centralize everything in the [CRUDBoster Issues](https://github.com/crocodic-studio/crudbooster/issues). Follow the guidelines in the "Using CRUDBooster Issues Page" session.
+All issues, bugs or help are in one place, in [Albreis CMS Issues](https://github.com/albreis/cms/issues). To request help or report a problem, centralize everything in the [Albreis CMS Issues](https://github.com/albreis/cms/issues). Follow the guidelines in the "Using Albreis CMS Issues Page" session.
 
 ## Important Note To Developer
-Dear Developer, you are not end new user, to use CRUDBooster, **Laravel knowledge** is a must!, CRUDBooster is just an additional package **Laravel Framework** to help use more efficient in development. If you dont have a laravel knowledge, so nightmare will come to you :D. We can't help you as you want in every issues especially basic issues of web development instead you can find out in internet (stackoverflow or any other)
+Dear Developer, you are not end new user, to use Albreis CMS, **Laravel knowledge** is a must!, Albreis CMS is just an additional package **Laravel Framework** to help use more efficient in development. If you dont have a laravel knowledge, so nightmare will come to you :D. We can't help you as you want in every issues especially basic issues of web development instead you can find out in internet (stackoverflow or any other)
 
 ## Contribution
 
@@ -27,7 +27,7 @@ All ways to contribute are welcome.
 To contribute directly to the source code:
 
 - Fork the repository
-- Clone your forked repo to your machine ```git clone https://github.com/YOUR_USERNAME/CRUDBooster.git```
+- Clone your forked repo to your machine ```git clone https://github.com/YOUR_USERNAME/cms.git```
 - Make your changes, corrections, or improvements
 - Make the commits to your local machine
 - Push the commits to your forked repo on github 
@@ -35,21 +35,21 @@ To contribute directly to the source code:
 
 #### Attention
 
-- When you submit your code, you are automatically accepting that it will not be exclusively yours, and that CRUDBooster may use it in any context, as it deems appropriate.
+- When you submit your code, you are automatically accepting that it will not be exclusively yours, and that Albreis CMS may use it in any context, as it deems appropriate.
 - If you use a third-party code, it must be licensed as open-source.
 - Contributions will only be accepted through a Pull Request.
 - Your contribution can not contain execution errors.
 
 ## Using GitHub Issues Page
 
-Do you have any doubt? Are you having some difficulty? Did you find a translation error, a bug, or any problem? Before posting, search on [CRUDBoster Issues](https://github.com/crocodic-studio/crudbooster/issues)  and make sure if anyone has not reported the same or similar problem.
+Do you have any doubt? Are you having some difficulty? Did you find a translation error, a bug, or any problem? Before posting, search on [Albreis CMS Issues](https://github.com/albreis/cms/issues)  and make sure if anyone has not reported the same or similar problem.
 
 To post you should detail the most about what happened. Specify in detail:
 
 - Operating system (name, version and architecture)
 - Web server (name, version and architecture)
 - Browser (name, version and architecture)
-- CRUDBooster version
+- Albreis CMS version
 - Laravel version
 - What is the problem?
 - How should it happen? What was the expected behavior?
@@ -69,16 +69,8 @@ If there is no interaction for a long period of time, it will be assumed that it
 6. Thanks To All [Developers](https://github.com/crocodic-studio/crudbooster/graphs/contributors)
 7. Thanks To All Funders
 
-## Donation
-Help us to keep CRUDBooster alive with some coffee. 
-[PayPal.Me/donateCRUDBooster](https://paypal.me/donateCRUDBooster). 
-
 ## Contact Us
-Email : crudbooster@gmail.com
+Email : contato@albreis.com.br
 
 ## License 
-CRUDBooster is under [MIT License](https://opensource.org/licenses/MIT)
-
-
-### :star: Your Stars Make Us Do More :star:
-As always if you found this package useful and you want to encourage us to maintain and work on it. Just press the star button to declare your willing.
+Albreis CMS is under [MIT License](https://opensource.org/licenses/MIT)

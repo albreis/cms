@@ -1,5 +1,5 @@
 <?php
 
-use crocodicstudio\crudbooster\helpers\CBRouter;
+use albreis\cms\helpers\CMSRouter;
 
-CBRouter::route();
+CMSRouter::route();

@@ -1,4 +1,4 @@
-<?php namespace crocodicstudio\crudbooster\controllers;
+<?php namespace albreis\cms\controllers;
 
 use File;
 use Image;
@@ -43,12 +43,12 @@ class FileController extends Controller
         $handler = new \Symfony\Component\HttpFoundation\File\File(storage_path('app/'.$fullFilePath));
         
         $extension = strtolower(File::extension($fullStoragePath));
-        $images_ext = config('crudbooster.IMAGE_EXTENSIONS', 'jpg,png,gif,bmp');
+        $images_ext = config('cms.IMAGE_EXTENSIONS', 'jpg,png,gif,bmp');
         $images_ext = explode(',', $images_ext);
         $imageFileSize = 0;
 
         if (in_array($extension, $images_ext)) {
-            $defaultThumbnail = config('crudbooster.DEFAULT_THUMBNAIL_WIDTH');
+            $defaultThumbnail = config('cms.DEFAULT_THUMBNAIL_WIDTH');
             if ($defaultThumbnail != 0) {
                 $w = Request::get('w') ?: $defaultThumbnail;
                 $h = Request::get('h') ?: $w;

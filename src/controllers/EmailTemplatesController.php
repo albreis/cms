@@ -1,10 +1,10 @@
-<?php namespace crocodicstudio\crudbooster\controllers;
+<?php namespace albreis\cms\controllers;
 
-use CRUDBooster;
+use CMS;
 use Illuminate\Support\Facades\Excel;
 use Illuminate\Support\Facades\PDF;
 
-class EmailTemplatesController extends \crocodicstudio\crudbooster\controllers\CBController
+class EmailTemplatesController extends \albreis\cms\controllers\CMSController
 {
     public function cbInit()
     {

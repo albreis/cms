@@ -1,17 +1,17 @@
 <?php
 
-namespace crocodicstudio\crudbooster\helpers;
+namespace albreis\cms\helpers;
 
 
-use crocodicstudio\crudbooster\middlewares\CBAuthAPI;
+use albreis\cms\middlewares\CMSAuthAPI;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 
-class CBRouter
+class CMSRouter
 {
-    private static $cb_namespace = '\crocodicstudio\crudbooster\controllers';
+    private static $cb_namespace = '\albreis\cms\controllers';
 
-    public static function getCBControllerFiles() {
+    public static function getCMSControllerFiles() {
         $controllers = glob(__DIR__.'/../controllers/*.php');
         $result = [];
         foreach ($controllers as $file) {
@@ -26,7 +26,7 @@ class CBRouter
             Route::post("api/get-token","ApiAuthorizationController@postGetToken");
         });
 
-        Route::group(['middleware' => ['api', CBAuthAPI::class], 'namespace' => 'App\Http\Controllers\Api'], function () {
+        Route::group(['middleware' => ['api', CMSAuthAPI::class], 'namespace' => 'App\Http\Controllers\Api'], function () {
             include base_path('routes/apicustom.php');
         });
     }
@@ -40,7 +40,7 @@ class CBRouter
     }
 
     private static function authRoute() {
-        Route::group(['middleware' => ['web'], 'prefix' => config('crudbooster.ADMIN_PATH'), 'namespace' => static::$cb_namespace], function () {
+        Route::group(['middleware' => ['web'], 'prefix' => config('cms.ADMIN_PATH'), 'namespace' => static::$cb_namespace], function () {
 
             Route::post('unlock-screen', ['uses' => 'AdminController@postUnlockScreen', 'as' => 'postUnlockScreen']);
             Route::get('lock-screen', ['uses' => 'AdminController@getLockscreen', 'as' => 'getLockScreen']);
@@ -56,8 +56,8 @@ class CBRouter
 
     private static function userControllerRoute() {
         Route::group([
-            'middleware' => ['web', '\crocodicstudio\crudbooster\middlewares\CBBackend'],
-            'prefix' => config('crudbooster.ADMIN_PATH'),
+            'middleware' => ['web', '\albreis\cms\middlewares\CMSBackend'],
+            'prefix' => config('cms.ADMIN_PATH'),
             'namespace' => 'App\Http\Controllers',
         ], function () {
 
@@ -79,7 +79,7 @@ class CBRouter
             foreach ($modules as $v) {
                 if (@$v->path && @$v->controller) {
                     try {
-                        CRUDBooster::routeController($v->path, $v->controller);
+                        CMS::routeController($v->path, $v->controller);
                     } catch (\Exception $e) {
                         Log::error("Path = ".$v->path."\nController = ".$v->controller."\nError = ".$e->getMessage());
                     }
@@ -90,28 +90,28 @@ class CBRouter
 
     private static function cbRoute() {
         Route::group([
-            'middleware' => ['web', '\crocodicstudio\crudbooster\middlewares\CBBackend'],
-            'prefix' => config('crudbooster.ADMIN_PATH'),
+            'middleware' => ['web', '\albreis\cms\middlewares\CMSBackend'],
+            'prefix' => config('cms.ADMIN_PATH'),
             'namespace' => static::$cb_namespace,
         ], function () {
 
             // Todo: change table
-            if (request()->is(config('crudbooster.ADMIN_PATH'))) {
+            if (request()->is(config('cms.ADMIN_PATH'))) {
                 $menus = db('cms_menus')->where('is_dashboard', 1)->first();
                 if ($menus) {
                     Route::get('/', 'StatisticBuilderController@getDashboard');
                 } else {
-                    CRUDBooster::routeController('/', 'AdminController', static::$cb_namespace);
+                    CMS::routeController('/', 'AdminController', static::$cb_namespace);
                 }
             }
 
 
-            CRUDBooster::routeController('api_generator', 'ApiCustomController', static::$cb_namespace);
+            CMS::routeController('api_generator', 'ApiCustomController', static::$cb_namespace);
 
             // Todo: change table
             $modules = [];
             try {
-                $modules = db('cms_moduls')->whereIn('controller', CBRouter::getCBControllerFiles())->get();
+                $modules = db('cms_moduls')->whereIn('controller', CMSRouter::getCMSControllerFiles())->get();
             } catch (\Exception $e) {
                 Log::error("Load cms moduls is failed. Caused = " . $e->getMessage());
             }
@@ -119,7 +119,7 @@ class CBRouter
             foreach ($modules as $v) {
                 if (@$v->path && @$v->controller) {
                     try {
-                        CRUDBooster::routeController($v->path, $v->controller, static::$cb_namespace);
+                        CMS::routeController($v->path, $v->controller, static::$cb_namespace);
                     } catch (\Exception $e) {
                         Log::error("Path = ".$v->path."\nController = ".$v->controller."\nError = ".$e->getMessage());
                     }

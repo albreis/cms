@@ -1,12 +1,12 @@
 <?php
 
-namespace crocodicstudio\crudbooster\middlewares;
+namespace albreis\cms\middlewares;
 
 use Closure;
-use CRUDBooster;
+use CMS;
 use DB;
 
-class CBBackend
+class CMSBackend
 {
     /**
      * Handle an incoming request.
@@ -17,25 +17,25 @@ class CBBackend
      */
     public function handle($request, Closure $next)
     {
-        $admin_path = config('crudbooster.ADMIN_PATH') ?: 'admin';
+        $admin_path = config('cms.ADMIN_PATH') ?: 'admin';
 
-        if (CRUDBooster::myId() == '') {
+        if (CMS::myId() == '') {
             $url = url($admin_path.'/login');
 
             return redirect($url)->with('message', cbLang('not_logged_in'));
         }
-        if (CRUDBooster::isLocked()) {
+        if (CMS::isLocked()) {
             $url = url($admin_path.'/lock-screen');
 
             return redirect($url);
         }
-        if($request->url()==CRUDBooster::adminPath('')){
-            $menus=DB::table('cms_menus')->whereRaw("cms_menus.id IN (select id_cms_menus from cms_menus_privileges where id_cms_privileges = '".CRUDBooster::myPrivilegeId()."')")->where('is_dashboard', 1)->where('is_active', 1)->first();
+        if($request->url()==CMS::adminPath('')){
+            $menus=DB::table('cms_menus')->whereRaw("cms_menus.id IN (select id_cms_menus from cms_menus_privileges where id_cms_privileges = '".CMS::myPrivilegeId()."')")->where('is_dashboard', 1)->where('is_active', 1)->first();
             if ($menus) {
                 if ($menus->type == 'Statistic') {
-                    return redirect()->action('\crocodicstudio\crudbooster\controllers\StatisticBuilderController@getDashboard');
+                    return redirect()->action('\albreis\cms\controllers\StatisticBuilderController@getDashboard');
                 } elseif ($menus->type == 'Module') {
-                    $module = CRUDBooster::first('cms_moduls', ['path' => $menus->path]);
+                    $module = CMS::first('cms_moduls', ['path' => $menus->path]);
                     return redirect()->action( $module->controller.'@getIndex');
                 } elseif ($menus->type == 'Route') {
                     $action = str_replace("Controller", "Controller@", $menus->path);

@@ -4,7 +4,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
-class CBSeeder extends Seeder
+class CMSSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -20,7 +20,7 @@ class CBSeeder extends Seeder
             $cms_users = DB::table('cms_users')->insert([
                 'created_at' => date('Y-m-d H:i:s'),
                 'name' => 'Super Admin',
-                'email' => 'admin@crudbooster.com',
+                'email' => 'admin@cms.com',
                 'password' => $password,
                 'id_cms_privileges' => 1,
                 'status' => 'Active',
@@ -37,12 +37,12 @@ class CBSeeder extends Seeder
             'content' => '<p>Hi,</p><p>Someone requested forgot password, here is your new password : </p><p>[password]</p><p><br></p><p>--</p><p>Regards,</p><p>Admin</p>',
             'description' => '[password]',
             'from_name' => 'System',
-            'from_email' => 'system@crudbooster.com',
+            'from_email' => 'system@cms.com',
             'cc_email' => null,
         ]);
         $this->command->info("Create email templates completed");
 
-        # CB Modules
+        # CMSHelper Modules
         $data = [
             [
 
@@ -175,10 +175,10 @@ class CBSeeder extends Seeder
 
         DB::table('cms_moduls')->insert($data);
         $this->command->info("Create default cb modules completed");
-        # CB Modules End
+        # CMSHelper Modules End
 
 
-        # CB Setting
+        # CMSHelper Setting
         $data = [
 
             //LOGIN REGISTER STYLE
@@ -218,7 +218,7 @@ class CBSeeder extends Seeder
                 'created_at' => date('Y-m-d H:i:s'),
                 'name' => 'email_sender',
                 'label' => 'Email Sender',
-                'content' => 'support@crudbooster.com',
+                'content' => 'support@cms.com',
                 'content_input_type' => 'text',
                 'group_setting' => cbLang('email_setting'),
                 'dataenum' => null,
@@ -281,7 +281,7 @@ class CBSeeder extends Seeder
                 'name' => 'appname',
                 'label' => 'Application Name',
                 'group_setting' => cbLang('application_setting'),
-                'content' => 'CRUDBooster',
+                'content' => 'CMS',
                 'content_input_type' => 'text',
                 'dataenum' => null,
                 'helper' => null,
@@ -360,9 +360,9 @@ class CBSeeder extends Seeder
             DB::table('cms_settings')->insert($row);
         }
         $this->command->info("Create cb settings completed");
-        # CB Setting End
+        # CMSHelper Setting End
 
-        # CB Privilege
+        # CMSHelper Privilege
         if (DB::table('cms_privileges')->where('name', 'Super Administrator')->count() == 0) {
             DB::table('cms_privileges')->insert([
                 'created_at' => date('Y-m-d H:i:s'),
@@ -412,7 +412,7 @@ class CBSeeder extends Seeder
             }
         }
         $this->command->info("Create roles completed");
-        # CB Privilege End
+        # CMSHelper Privilege End
 
         $this->command->info('All cb seeders completed !');
     }

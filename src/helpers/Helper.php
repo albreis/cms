@@ -1,10 +1,10 @@
 <?php
 /* 
 | ---------------------------------------------------------------------------------------------------------------
-| Main Helper of CRUDBooster
-| Do not edit or modify this helper unless your modification will be replace if any update from CRUDBooster.
+| Main Helper of CMS
+| Do not edit or modify this helper unless your modification will be replace if any update from CMS.
 | 
-| Homepage : http://crudbooster.com
+| Homepage : http://cms.com
 | ---------------------------------------------------------------------------------------------------------------
 |
 */
@@ -30,7 +30,7 @@ if(!function_exists('cbLang')) {
      * @return array|\Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Translation\Translator|string|null
      */
     function cbLang($key, array $replace = [], $locale = null) {
-        return trans("crudbooster::crudbooster.".$key, $replace, $locale);
+        return trans("cms::cms.".$key, $replace, $locale);
     }
 }
 
@@ -105,7 +105,7 @@ if(!function_exists('get_setting')) {
      * @return bool
      */
     function get_setting($key, $default = null) {
-        $setting = \crocodicstudio\crudbooster\helpers\CB::getSetting($key);
+        $setting = \albreis\cms\helpers\CMSHelper::getSetting($key);
         $setting = ($setting)?:$default;
         return $setting;
     }

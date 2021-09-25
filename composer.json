@@ -1,6 +1,6 @@
 {
     "name": "albreis/cms",
-    "description": "CRUDBooster Is CRUD Generator Based On Laravel Easy To Make An Advanced Backend",
+    "description": "Albreis CMS Is CRUD Generator Based On Laravel Easy To Make An Advanced Backend",
     "type": "library",
     "license": "MIT",
     "keywords":[
@@ -8,7 +8,7 @@
         "admin-panel",
         "backend",
         "crud-generator",
-        "crudbooster",
+        "cms",
         "crud",
         "generator"
     ],
@@ -16,6 +16,10 @@
         {
             "name": "Ferry",
             "email": "ferry@crocodic.com"
+        },
+        {
+            "name": "Everaldo Reis",
+            "email": "contato@ersolucoesweb.com.br"
         }
     ],
     "minimum-stability": "stable",
@@ -29,13 +33,13 @@
     },
     "autoload": {
         "psr-4": {
-          "crocodicstudio\\crudbooster\\": "src/"
+          "albreis\\cms\\": "src/"
         }
       },
     "extra": {
         "laravel": {
             "providers": [
-                "crocodicstudio\\crudbooster\\CRUDBoosterServiceProvider"
+                "albreis\\cms\\CMSServiceProvider"
             ]
         }
     }

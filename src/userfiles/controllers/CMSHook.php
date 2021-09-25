@@ -5,7 +5,7 @@ use DB;
 use Session;
 use Request;
 
-class CBHook extends Controller {
+class CMSHook extends Controller {
 
 	/*
 	| --------------------------------------

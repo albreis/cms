@@ -1,6 +1,6 @@
 <?php
 
-namespace crocodicstudio\crudbooster\helpers;
+namespace albreis\cms\helpers;
 
 use Cache;
 use DB;
@@ -12,7 +12,7 @@ use Session;
 use Storage;
 use Validator;
 
-class CRUDBooster
+class CMS
 {
     /**
      *	Comma-delimited data output from the child table
@@ -99,7 +99,7 @@ class CRUDBooster
 
     private static function resizeImage($fullFilePath, $resize_width = null, $resize_height = null, $qty = 100, $thumbQty = 75)
     {
-        $images_ext = config('crudbooster.IMAGE_EXTENSIONS', 'jpg,png,gif,bmp');
+        $images_ext = config('cms.IMAGE_EXTENSIONS', 'jpg,png,gif,bmp');
         $images_ext = explode(',', $images_ext);
 
         $filename = basename($fullFilePath);
@@ -210,7 +210,7 @@ class CRUDBooster
 
     public static function me()
     {
-        return DB::table(config('crudbooster.USER_TABLE'))->where('id', Session::get('admin_id'))->first();
+        return DB::table(config('cms.USER_TABLE'))->where('id', Session::get('admin_id'))->first();
     }
 
     public static function myId()
@@ -238,7 +238,7 @@ class CRUDBooster
         $roles = Session::get('admin_privileges_roles');
         if ($roles) {
             foreach ($roles as $role) {
-                if ($role->path == CRUDBooster::getModulePath()) {
+                if ($role->path == CMS::getModulePath()) {
                     return $role;
                 }
             }
@@ -531,11 +531,11 @@ class CRUDBooster
     public static function getModulePath()
     {
         // Check to position of admin_path
-        if(config("crudbooster.ADMIN_PATH")) {
+        if(config("cms.ADMIN_PATH")) {
             $adminPathSegments = explode('/', Request::path());
             $no = 1;
             foreach($adminPathSegments as $path) {
-                if($path == config("crudbooster.ADMIN_PATH")) {
+                if($path == config("cms.ADMIN_PATH")) {
                     $segment = $no+1;
                     break;
                 }
@@ -551,7 +551,7 @@ class CRUDBooster
     public static function mainpath($path = null)
     {
 
-        $controllername = str_replace(["\crocodicstudio\crudbooster\controllers\\", "App\Http\Controllers\\"], "", strtok(Route::currentRouteAction(), '@'));
+        $controllername = str_replace(["\albreis\cms\controllers\\", "App\Http\Controllers\\"], "", strtok(Route::currentRouteAction(), '@'));
         $route_url = route($controllername.'GetIndex');
 
         if ($path) {
@@ -567,7 +567,7 @@ class CRUDBooster
 
     public static function adminPath($path = null)
     {
-        return url(config('crudbooster.ADMIN_PATH').'/'.$path);
+        return url(config('cms.ADMIN_PATH').'/'.$path);
     }
 
     public static function getCurrentId()
@@ -732,7 +732,7 @@ class CRUDBooster
         $cc_email = $queue->email_cc_email;
         $attachments = unserialize($queue->email_attachments);
 
-        \Mail::send("crudbooster::emails.blank", ['content' => $html], function ($message) use (
+        \Mail::send("cms::emails.blank", ['content' => $html], function ($message) use (
             $html,
             $to,
             $subject,
@@ -769,7 +769,7 @@ class CRUDBooster
         $data = $config['data'];
         $template = $config['template'];
 
-        $template = CRUDBooster::first('cms_email_templates', ['slug' => $template]);
+        $template = CMS::first('cms_email_templates', ['slug' => $template]);
         $html = $template->content;
         foreach ($data as $key => $val) {
             $html = str_replace('['.$key.']', $val, $html);
@@ -782,8 +782,8 @@ class CRUDBooster
             $a = [];
             $a['send_at'] = $config['send_at'];
             $a['email_recipient'] = $to;
-            $a['email_from_email'] = $template->from_email ?: CRUDBooster::getSetting('email_sender');
-            $a['email_from_name'] = $template->from_name ?: CRUDBooster::getSetting('appname');
+            $a['email_from_email'] = $template->from_email ?: CMS::getSetting('email_sender');
+            $a['email_from_name'] = $template->from_name ?: CMS::getSetting('appname');
             $a['email_cc_email'] = $template->cc_email;
             $a['email_subject'] = $subject;
             $a['email_content'] = $html;
@@ -794,12 +794,12 @@ class CRUDBooster
             return true;
         }
 
-        \Mail::send("crudbooster::emails.blank", ['content' => $html], function ($message) use ($to, $subject, $template, $attachments) {
+        \Mail::send("cms::emails.blank", ['content' => $html], function ($message) use ($to, $subject, $template, $attachments) {
             $message->priority(1);
             $message->to($to);
 
             if ($template->from_email) {
-                $from_name = ($template->from_name) ?: CRUDBooster::getSetting('appname');
+                $from_name = ($template->from_name) ?: CMS::getSetting('appname');
                 $message->from($template->from_email, $from_name);
             }
 
@@ -856,7 +856,7 @@ class CRUDBooster
         $f = explode('.', $table);
 
         if (count($f) == 1) {
-            return ["table" => $f[0], "database" => config('crudbooster.MAIN_DB_DATABASE')];
+            return ["table" => $f[0], "database" => config('cms.MAIN_DB_DATABASE')];
         } elseif (count($f) == 2) {
             return ["database" => $f[0], "table" => $f[1]];
         } elseif (count($f) == 3) {
@@ -924,7 +924,7 @@ class CRUDBooster
 //         if (self::getCache('table_'.$table, 'primary_key')) {
 //             return self::getCache('table_'.$table, 'primary_key');
 //         }
-//         $table = CRUDBooster::parseSqlTable($table);
+//         $table = CMS::parseSqlTable($table);
 
 //         if (! $table['table']) {
 //             throw new \Exception("parseSqlTable can't determine the table");
@@ -957,7 +957,7 @@ class CRUDBooster
 
     public static function newId($table)
     {
-        $key = CRUDBooster::findPrimaryKey($table);
+        $key = CMS::findPrimaryKey($table);
         $id = DB::table($table)->max($key) + 1;
 
         return $id;
@@ -973,7 +973,7 @@ class CRUDBooster
             throw new Exception("\$field is empty !", 1);
         }
 
-        $table = CRUDBooster::parseSqlTable($table);
+        $table = CMS::parseSqlTable($table);
 
         // if(self::getCache('table_'.$table,'column_'.$field)) {
         // 	return self::getCache('table_'.$table,'column_'.$field);
@@ -990,8 +990,8 @@ class CRUDBooster
 
     public static function getForeignKey($parent_table, $child_table)
     {
-        $parent_table = CRUDBooster::parseSqlTable($parent_table)['table'];
-        $child_table = CRUDBooster::parseSqlTable($child_table)['table'];
+        $parent_table = CMS::parseSqlTable($parent_table)['table'];
+        $child_table = CMS::parseSqlTable($child_table)['table'];
         if (Schema::hasColumn($child_table, 'id_'.$parent_table)) {
             return 'id_'.$parent_table;
         }
@@ -1072,7 +1072,7 @@ class CRUDBooster
 
     public static function insertLog($description, $details = '')
     {
-        if (CRUDBooster::getSetting('api_debug_mode')) {
+        if (CMS::getSetting('api_debug_mode')) {
             $a = [];
             $a['created_at'] = date('Y-m-d H:i:s');
             $a['ipaddress'] = $_SERVER['REMOTE_ADDR'];
@@ -1093,13 +1093,13 @@ class CRUDBooster
     public static function listTables()
     {
         $tables = [];
-        $multiple_db = config('crudbooster.MULTIPLE_DATABASE_MODULE');
+        $multiple_db = config('cms.MULTIPLE_DATABASE_MODULE');
         $multiple_db = ($multiple_db) ? $multiple_db : [];
-        $db_database = config('crudbooster.MAIN_DB_DATABASE');
+        $db_database = config('cms.MAIN_DB_DATABASE');
 
         if ($multiple_db) {
             try {
-                $multiple_db[] = config('crudbooster.MAIN_DB_DATABASE');
+                $multiple_db[] = config('cms.MAIN_DB_DATABASE');
                 $query_table_schema = implode("','", $multiple_db);
                 $tables = DB::select("SELECT CONCAT(TABLE_SCHEMA,'.',TABLE_NAME) FROM INFORMATION_SCHEMA.Tables WHERE TABLE_TYPE = 'BASE TABLE' AND TABLE_SCHEMA != 'mysql' AND TABLE_SCHEMA != 'performance_schema' AND TABLE_SCHEMA != 'information_schema' AND TABLE_SCHEMA != 'phpmyadmin' AND TABLE_SCHEMA IN ('$query_table_schema')");
             } catch (\Exception $e) {
@@ -1146,7 +1146,7 @@ class CRUDBooster
 
     public static function authAPI()
     {
-        $allowedUserAgent = config('crudbooster.API_USER_AGENT_ALLOWED');
+        $allowedUserAgent = config('cms.API_USER_AGENT_ALLOWED');
         $user_agent = Request::header('User-Agent');
         $authorization = Request::header('Authorization');
 
@@ -1183,7 +1183,7 @@ class CRUDBooster
         $content = $config['content'];
         $to = $config['to'];
         $id_cms_users = $config['id_cms_users'];
-        $id_cms_users = ($id_cms_users) ?: [CRUDBooster::myId()];
+        $id_cms_users = ($id_cms_users) ?: [CMS::myId()];
         foreach ($id_cms_users as $id) {
             $a = [];
             $a['created_at'] = date('Y-m-d H:i:s');
@@ -1203,7 +1203,7 @@ class CRUDBooster
             return 'title , content null !';
         }
 
-        $apikey = CRUDBooster::getSetting('google_fcm_key');
+        $apikey = CMS::getSetting('google_fcm_key');
         $url = 'https://fcm.googleapis.com/fcm/send';
         $fields = [
             'registration_ids' => $regID,
@@ -1238,7 +1238,7 @@ class CRUDBooster
     public static function getTableColumns($table)
     {
         //$cols = DB::getSchemaBuilder()->getColumnListing($table);
-        $table = CRUDBooster::parseSqlTable($table);
+        $table = CMS::parseSqlTable($table);
         $cols = collect(DB::select('SELECT * FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = :database AND TABLE_NAME = :table', [
             'database' => $table['database'],
             'table' => $table['table'],
@@ -1259,7 +1259,7 @@ class CRUDBooster
 
     public static function getNameTable($columns)
     {
-        $name_col_candidate = config('crudbooster.NAME_FIELDS_CANDIDATE');
+        $name_col_candidate = config('cms.NAME_FIELDS_CANDIDATE');
         $name_col_candidate = explode(',', $name_col_candidate);
         $name_col = '';
         foreach ($columns as $c) {
@@ -1308,9 +1308,9 @@ class CRUDBooster
 		use Session;
 		use Request;
 		use DB;
-		use CRUDBooster;
+		use CMS;
 
-		class '.$controller_name.' extends \crocodicstudio\crudbooster\controllers\ApiController {
+		class '.$controller_name.' extends \albreis\cms\controllers\ApiController {
 
 		    function __construct() {    
 				$this->table       = "'.$table_name.'";        
@@ -1356,12 +1356,12 @@ class CRUDBooster
     {
 
         $exception = ['id', 'created_at', 'updated_at', 'deleted_at'];
-        $image_candidate = explode(',', config('crudbooster.IMAGE_FIELDS_CANDIDATE'));
-        $password_candidate = explode(',', config('crudbooster.PASSWORD_FIELDS_CANDIDATE'));
-        $phone_candidate = explode(',', config('crudbooster.PHONE_FIELDS_CANDIDATE'));
-        $email_candidate = explode(',', config('crudbooster.EMAIL_FIELDS_CANDIDATE'));
-        $name_candidate = explode(',', config('crudbooster.NAME_FIELDS_CANDIDATE'));
-        $url_candidate = explode(',', config("crudbooster.URL_FIELDS_CANDIDATE"));
+        $image_candidate = explode(',', config('cms.IMAGE_FIELDS_CANDIDATE'));
+        $password_candidate = explode(',', config('cms.PASSWORD_FIELDS_CANDIDATE'));
+        $phone_candidate = explode(',', config('cms.PHONE_FIELDS_CANDIDATE'));
+        $email_candidate = explode(',', config('cms.EMAIL_FIELDS_CANDIDATE'));
+        $name_candidate = explode(',', config('cms.NAME_FIELDS_CANDIDATE'));
+        $url_candidate = explode(',', config("cms.URL_FIELDS_CANDIDATE"));
 
         $controllername = ucwords(str_replace('_', ' ', $table));
         $controllername = str_replace(' ', '', $controllername).'Controller';
@@ -1379,9 +1379,9 @@ class CRUDBooster
             $controllername = str_replace(' ', '', $controllername).'Controller';
         }
 
-        $coloms = CRUDBooster::getTableColumns($table);
-        $name_col = CRUDBooster::getNameTable($coloms);
-        $pk = CB::pk($table);
+        $coloms = CMS::getTableColumns($table);
+        $name_col = CMS::getNameTable($coloms);
+        $pk = CMSHelper::pk($table);
 
         $button_table_action = 'TRUE';
         $button_action_style = "button_icon";
@@ -1402,9 +1402,9 @@ class CRUDBooster
 	use Session;
 	use Request;
 	use DB;
-	use CRUDBooster;
+	use CMS;
 
-	class Admin'.$controllername.' extends \crocodicstudio\crudbooster\controllers\CBController {
+	class Admin'.$controllername.' extends \albreis\cms\controllers\CMSController {
 
 	    public function cbInit() {
 	    	# START CONFIGURATION DO NOT REMOVE THIS LINE
@@ -1448,13 +1448,13 @@ class CRUDBooster
 
             if (substr($field, 0, 3) == 'id_') {
                 $jointable = str_replace('id_', '', $field);
-                $joincols = CRUDBooster::getTableColumns($jointable);
-                $joinname = CRUDBooster::getNameTable($joincols);
+                $joincols = CMS::getTableColumns($jointable);
+                $joinname = CMS::getNameTable($joincols);
                 $php .= "\t\t".'$this->col[] = array("label"=>"'.$label.'","name"=>"'.$field.'","join"=>"'.$jointable.','.$joinname.'");'."\n";
             } elseif (substr($field, -3) == '_id') {
                 $jointable = substr($field, 0, (strlen($field) - 3));
-                $joincols = CRUDBooster::getTableColumns($jointable);
-                $joinname = CRUDBooster::getNameTable($joincols);
+                $joincols = CMS::getTableColumns($jointable);
+                $joinname = CMS::getNameTable($joincols);
                 $php .= "\t\t".'$this->col[] = array("label"=>"'.$label.'","name"=>"'.$field.'","join"=>"'.$jointable.','.$joinname.'");'."\n";
             } else {
                 $image = '';
@@ -1485,7 +1485,7 @@ class CRUDBooster
                 continue;
             }
 
-            $typedata = CRUDBooster::getFieldType($table, $field);
+            $typedata = CMS::getFieldType($table, $field);
 
             switch ($typedata) {
                 default:
@@ -1525,16 +1525,16 @@ class CRUDBooster
 
             if (substr($field, 0, 3) == 'id_') {
                 $jointable = str_replace('id_', '', $field);
-                $joincols = CRUDBooster::getTableColumns($jointable);
-                $joinname = CRUDBooster::getNameTable($joincols);
+                $joincols = CMS::getTableColumns($jointable);
+                $joinname = CMS::getNameTable($joincols);
                 $attribute['datatable'] = $jointable.','.$joinname;
                 $type = 'select2';
             }
 
             if (substr($field, -3) == '_id') {
                 $jointable = str_replace('_id', '', $field);
-                $joincols = CRUDBooster::getTableColumns($jointable);
-                $joinname = CRUDBooster::getNameTable($joincols);
+                $joincols = CMS::getTableColumns($jointable);
+                $joinname = CMS::getNameTable($joincols);
                 $attribute['datatable'] = $jointable.','.$joinname;
                 $type = 'select2';
             }

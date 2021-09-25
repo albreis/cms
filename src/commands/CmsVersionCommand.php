@@ -1,23 +1,23 @@
-<?php namespace crocodicstudio\crudbooster\commands;
+<?php namespace albreis\cms\commands;
 
 use App;
 use Illuminate\Console\Command;
 
-class CrudboosterVersionCommand extends Command
+class CmsVersionCommand extends Command
 {
     /**
      * The console command name.
      *
      * @var string
      */
-    protected $name = 'crudbooster:version';
+    protected $name = 'cms:version';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'CRUDBooster Version Command';
+    protected $description = 'CMS Version Command';
 
     /**
      * Execute the console command.

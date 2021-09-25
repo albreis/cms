@@ -1,10 +1,10 @@
 <?php
 
 
-namespace crocodicstudio\crudbooster\controllers;
+namespace albreis\cms\controllers;
 
 
-use crocodicstudio\crudbooster\helpers\CB;
+use albreis\cms\helpers\CMSHelper;
 use Illuminate\Support\Facades\Cache;
 
 class ApiAuthorizationController extends Controller
@@ -13,7 +13,7 @@ class ApiAuthorizationController extends Controller
     private $token_length = 16;
 
     public function postGetToken() {
-        CB::valid(['secret'=>'required'],'json');
+        CMSHelper::valid(['secret'=>'required'],'json');
 
         $exists = db("cms_apikey")
             ->where("screetkey", g("secret"))
