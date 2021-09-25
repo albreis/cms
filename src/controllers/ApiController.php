@@ -63,7 +63,7 @@ class ApiController extends Controller
         $posts_keys = array_keys($posts);
         $posts_values = array_values($posts);
 
-        $row_api = DB::table('cms_apicustom')->where('permalink', $this->permalink)->first();
+        $row_api = DB::table('cms_apicustom')->where('permalink', $this->permalink)->where('method_type', strtolower(Request::method()))->first();
 
         $action_type = $row_api->aksi;
         $table = $row_api->tabel;
@@ -75,7 +75,6 @@ class ApiController extends Controller
         | ----------------------------------------------
         |
         */
-
         if ($row_api->method_type) {
             $method_type = $row_api->method_type;
             if ($method_type) {
@@ -400,66 +399,57 @@ class ApiController extends Controller
 
             $this->hook_query($data);
 
-            if ($action_type == 'list') {
-                if ($orderby) {
-                    $orderby_raw = explode(',', $orderby);
-                    $orderby_col = $orderby_raw[0];
-                    $orderby_val = $orderby_raw[1];
-                } else {
-                    $orderby_col = $table.'.'.$pk;
-                    $orderby_val = 'desc';
-                }
-
-                $rows = $data->orderby($orderby_col, $orderby_val)->get();
-
-                if ($rows) {
-
-                    foreach ($rows as &$row) {
-                        foreach ($row as $k => $v) {
-                            $ext = \File::extension($v);
-                            if (in_array($ext, $uploads_format_candidate)) {
-                                $row->$k = asset($v);
-                            }
-
-                            if (! in_array($k, $responses_fields)) {
-                                unset($row->$k);
-                            }
-                        }
+            if(is_object($data)) {
+                if ($action_type == 'list') {
+                    if ($orderby) {
+                        $orderby_raw = explode(',', $orderby);
+                        $orderby_col = $orderby_raw[0];
+                        $orderby_val = $orderby_raw[1];
+                    } else {
+                        $orderby_col = $table.'.'.$pk;
+                        $orderby_val = 'desc';
                     }
 
-                    $result['api_status'] = 1;
-                    $result['api_message'] = 'success';
-                    $result['data'] = $rows;
-                } else {
-                    $result['api_status'] = 0;
-                    $result['api_message'] = 'There is no data found !';
-                    $result['data'] = [];
-                }
-            } elseif ($action_type == 'detail') {
+                    $rows = $data->orderby($orderby_col, $orderby_val)->get();
 
-                $rows = $data->first();
+                    if ($rows) {
 
-                if ($rows) {
+                        foreach ($rows as &$row) {
+                            foreach ($row as $k => $v) {
+                                $ext = \File::extension($v);
+                                if (in_array($ext, $uploads_format_candidate)) {
+                                    $row->$k = asset($v);
+                                }
 
-                    foreach ($parameters as $param) {
-                        $name = $param['name'];
-                        $type = $param['type'];
-                        $value = $posts[$name];
-                        $used = $param['used'];
-                        $required = $param['required'];
-
-                        if ($required) {
-                            if ($type == 'password') {
-                                if (! Hash::check($value, $rows->{$name})) {
-                                    $result['api_status'] = 0;
-                                    $result['api_message'] = 'Invalid credentials. Check your username and password.';
-
-                                    goto show;
+                                if (! in_array($k, $responses_fields)) {
+                                    unset($row->$k);
                                 }
                             }
-                        } else {
-                            if ($used) {
-                                if ($value) {
+                        }
+
+                        $result['api_status'] = 1;
+                        $result['api_message'] = 'success';
+                        $result['data'] = $rows;
+                    } else {
+                        $result['api_status'] = 0;
+                        $result['api_message'] = 'There is no data found !';
+                        $result['data'] = [];
+                    }
+                } elseif ($action_type == 'detail') {
+
+                    $rows = $data->first();
+
+                    if ($rows) {
+
+                        foreach ($parameters as $param) {
+                            $name = $param['name'];
+                            $type = $param['type'];
+                            $value = $posts[$name];
+                            $used = $param['used'];
+                            $required = $param['required'];
+
+                            if ($required) {
+                                if ($type == 'password') {
                                     if (! Hash::check($value, $rows->{$name})) {
                                         $result['api_status'] = 0;
                                         $result['api_message'] = 'Invalid credentials. Check your username and password.';
@@ -467,49 +457,66 @@ class ApiController extends Controller
                                         goto show;
                                     }
                                 }
+                            } else {
+                                if ($used) {
+                                    if ($value) {
+                                        if (! Hash::check($value, $rows->{$name})) {
+                                            $result['api_status'] = 0;
+                                            $result['api_message'] = 'Invalid credentials. Check your username and password.';
+
+                                            goto show;
+                                        }
+                                    }
+                                }
                             }
                         }
-                    }
 
-                    foreach ($rows as $k => $v) {
-                        $ext = \File::extension($v);
-                        if (in_array($ext, $uploads_format_candidate)) {
-                            $rows->$k = asset($v);
+                        foreach ($rows as $k => $v) {
+                            $ext = \File::extension($v);
+                            if (in_array($ext, $uploads_format_candidate)) {
+                                $rows->$k = asset($v);
+                            }
+
+                            if (! in_array($k, $responses_fields)) {
+                                unset($rows->$k);
+                            }
                         }
 
-                        if (! in_array($k, $responses_fields)) {
-                            unset($rows->$k);
-                        }
+                        $result['api_status'] = 1;
+                        $result['api_message'] = 'success';
+
+                        $rows = (array) $rows;
+                        $result['data'] = $rows;
+                    } else {
+                        $result['api_status'] = 0;
+                        $result['api_message'] = 'There is no data found !';
+
+                    }
+                } elseif ($action_type == 'delete') {
+
+                    if (CRUDBooster::isColumnExists($table, 'deleted_at')) {
+                        $delete = $data->update(["{$table}.deleted_at" => date('Y-m-d H:i:s')]);
+                    } else {
+                        $delete = $data->delete();
                     }
 
-                    $result['api_status'] = 1;
-                    $result['api_message'] = 'success';
-
-                    $rows = (array) $rows;
-                    $result['data'] = $rows;
-                } else {
-                    $result['api_status'] = 0;
-                    $result['api_message'] = 'There is no data found !';
+                    $result['api_status'] = ($delete) ? 1 : 0;
+                    $result['api_message'] = ($delete) ? "success" : "failed";
 
                 }
-            } elseif ($action_type == 'delete') {
-
-                if (CRUDBooster::isColumnExists($table, 'deleted_at')) {
-                    $delete = $data->update(['deleted_at' => date('Y-m-d H:i:s')]);
-                } else {
-                    $delete = $data->delete();
-                }
-
-                $result['api_status'] = ($delete) ? 1 : 0;
-                $result['api_message'] = ($delete) ? "success" : "failed";
-
+            }
+            else {                
+                $result['api_status'] = ($data) ? 1 : 0;
+                $result['api_message'] = ($data) ? "success" : "failed";
             }
         } elseif ($action_type == 'save_add' || $action_type == 'save_edit') {
 
             $row_assign = [];
-            foreach ($input_validator as $k => $v) {
-                if (CRUDBooster::isColumnExists($table, $k)) {
-                    $row_assign[$k] = $v;
+            if($input_validator) {
+                foreach ($input_validator as $k => $v) {
+                    if (CRUDBooster::isColumnExists($table, $k)) {
+                        $row_assign[$k] = $v;
+                    }
                 }
             }
 
@@ -601,7 +608,9 @@ class ApiController extends Controller
 
                     $this->hook_query($update);
 
-                    $update = $update->update($row_assign);
+                    if(is_object($update)) {
+                        $update = $update->update($row_assign);
+                    }
                     $result['api_status'] = 1;
                     $result['api_message'] = 'success';
 
