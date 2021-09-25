@@ -49,21 +49,21 @@
                         });
 
 
-                        $('#input-nama').on('input', function () {
-                            var v = $(this).val();
-                            if (v) {
-                                v = v.replace(/[^0-9a-z]/gi, '_').toLowerCase();
-                                $('#input-permalink').val(v);
-                            } else {
-                                $('#input-permalink').val('');
-                            }
-                        })
+                        // $('#input-nama').on('input', function () {
+                        //     var v = $(this).val();
+                        //     if (v) {
+                        //         v = v.replace(/[^0-9a-z]/gi, '_').toLowerCase();
+                        //         $('#input-permalink').val(v);
+                        //     } else {
+                        //         $('#input-permalink').val('');
+                        //     }
+                        // })
 
-                        $('#input-permalink').on('input', function () {
-                            var v = $(this).val();
-                            v = v.replace(/[^0-9a-z]/gi, '_').toLowerCase();
-                            $('#input-permalink').val(v);
-                        })
+                        // $('#input-permalink').on('input', function () {
+                        //     var v = $(this).val();
+                        //     v = v.replace(/[^0-9a-z]/gi, '_').toLowerCase();
+                        //     $('#input-permalink').val(v);
+                        // })
 
                         $('#tipe_action').change(function () {
                             var v = $(this).val();
@@ -75,13 +75,28 @@
                             $('.method_type').prop('checked', false);
                             switch (v) {
                                 case 'list':
-                                case 'detail':
-                                case 'delete':
                                     $('.method_type[value=get]').prop('checked', true);
                                     break;
+                                case 'detail':
+                                    $('.method_type[value=get]').prop('checked', true);
+                                    break;
+                                case 'delete':
+                                    $('.method_type[value=delete]').prop('checked', true);
+                                    break;
+                                case 'patch':
+                                    $('.method_type[value=patch]').prop('checked', true);
+                                    break;
+                                case 'put':
+                                    $('.method_type[value=put]').prop('checked', true);
+                                    break;
+                                case 'head':
+                                    $('.method_type[value=head]').prop('checked', true);
+                                    break;
                                 case 'save_add':
-                                case 'save_edit':
                                     $('.method_type[value=post]').prop('checked', true);
+                                    break;
+                                case 'save_edit':
+                                    $('.method_type[value=patch]').prop('checked', true);
                                     break;
                             }
                         })
@@ -592,7 +607,7 @@
                 <input type="hidden" name="_token" value="{{ csrf_token() }}"/>
                 <input type="hidden" name="id" value="{{$row->id}}">
                 <div class='row'>
-                    <div class='col-sm-8'>
+                    <div class='col-sm-5'>
                         <div class='form-group'>
                             <label>API Name</label>
                             <input type='text' class='form-control' value='{{$row->nama}}' required name='nama' id='input-nama'/>
@@ -610,19 +625,7 @@
                             </select>
                         </div>
                     </div>
-                </div>
-
-                <div class='row'>
-                    <div class='col-sm-8'>
-                        <div class='form-group'>
-                            <label>API Slug</label>
-                            <div class='input-group'>
-                                <span class="input-group-addon" id="basic-addon1" style="background:#eeeeee">{{url("api")}}/</span>
-                                <input type='text' class='form-control' value='{{$row->permalink}}' required name='permalink' id='input-permalink'/>
-                            </div>
-                        </div>
-                    </div>
-                    <div class='col-sm-2'>
+                    <div class='col-sm-3'>
                         <div class='form-group'>
                             <label>Action Type</label>
                             <select id='tipe_action' name='aksi' required class='form-control'>
@@ -635,16 +638,72 @@
                             </select>
                         </div>
                     </div>
-                    <div class='col-sm-2'>
+                </div>
+
+                <div class='row'>
+                    <div class='col-sm-7'>
+                        <div class='form-group'>
+                            <label>API Slug</label>
+                            <div class='input-group'>
+                                <span class="input-group-addon" id="basic-addon1" style="background:#eeeeee">{{url("api")}}/</span>
+                                <input type='text' class='form-control' value='{{$row->permalink}}' required name='permalink' id='input-permalink'/>
+                            </div>
+                        </div>
+                        @if(!$row->id || empty($row->controller))
+                        <script>
+                            document.querySelector('#input-permalink').addEventListener('keyup', createControllerName)
+                            document.querySelector('#input-permalink').addEventListener('blur', createControllerName)
+                            function ucwords (str) {
+                                return (str + '').replace(/^([a-z])|\s+([a-z])/g, function ($1) {
+                                    return $1.toUpperCase();
+                                });
+                            }
+                            function createControllerName(e) {
+                                if(window.edited) return;
+                                let input = document.querySelector('#input-controller')
+                                $controllerName = ucwords(e.target.value.replace('/', ' '));
+                                $controllerName = $controllerName.replace(' ', '/');
+                                $controllerName = ucwords($controllerName.replace('_', ' '));
+                                $controllerName = $controllerName.replace(' ', '');
+                                $controllerName = $controllerName.replace(/\/?\[[^\/]+\]/gi, '')
+                                $controllerName = $controllerName.replace(/[^\/\w\d]+/gi, '')
+                                input.value = $controllerName
+                            }
+                        </script>
+                        @endif
+                    </div>
+                    <div class='col-sm-5'>
+                        <div class='form-group'>
+                            <label>Controller Name</label>
+                            @if($row->id && !empty($row->controller))
+                                <input readonly disabled onfocus="window.edited=true" type='text' class='form-control' value='{{$row->controller}}' id='input-controller'/>
+                                <input type="hidden" value='{{$row->controller}}' name='controller' />
+                            @else
+                                <input onfocus="window.edited=true" type='text' class='form-control' value='{{$row->controller}}' required name='controller' id='input-controller'/>
+                            @endif
+                        </div>
+                    </div>
+                    <div class='col-sm-12'>
                         <div class='form-group'>
                             <label>Method Type</label>
                             <br/>
                             <label class='radio-inline'>
-                                <input type='radio' required class='method_type' {{ ($row->method_type == 'get')?"checked":"" }} name='method_type'
-                                       value='get'/> GET
+                                <input type='radio' required class='method_type' {{ ($row->method_type == 'get')?"checked":"" }} name='method_type' value='get'/> GET
                             </label>
                             <label class='radio-inline'>
                                 <input type='radio' class='method_type' {{ ($row->method_type == 'post')?"checked":"" }} name='method_type' value='post'/> POST
+                            </label>
+                            <label class='radio-inline'>
+                                <input type='radio' class='method_type' {{ ($row->method_type == 'put')?"checked":"" }} name='method_type' value='put'/> PUT
+                            </label>
+                            <label class='radio-inline'>
+                                <input type='radio' class='method_type' {{ ($row->method_type == 'delete')?"checked":"" }} name='method_type' value='delete'/> DELETE
+                            </label>
+                            <label class='radio-inline'>
+                                <input type='radio' class='method_type' {{ ($row->method_type == 'patch')?"checked":"" }} name='method_type' value='patch'/> PATCH
+                            </label>
+                            <label class='radio-inline'>
+                                <input type='radio' class='method_type' {{ ($row->method_type == 'head')?"checked":"" }} name='method_type' value='head'/> HEAD
                             </label>
 
                         </div>

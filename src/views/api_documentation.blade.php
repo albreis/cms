@@ -74,6 +74,8 @@
                       <a class='btn btn-xs btn-warning' target="_blank" href='{{CRUDBooster::mainpath("download-postman")}}'>Export For POSTMAN <sup>Beta</sup></a>
                     </span>
                     </th>
+                    <th width='2%'>Type</th>
+                    <th width='2%'>Verb</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -166,6 +168,8 @@
                             </table>
                         </div>
                     </td>
+                    <td></td>
+                    <td></td>
                 </tr>
 
                 @foreach($apis as $api)
@@ -332,6 +336,8 @@
                                 </table>
                             </div>
                         </td>
+                        <td><?= strtoupper($api->aksi);?></td>
+                        <td><?= strtoupper($api->method_type);?></td>
                     </tr>
                 @endforeach
 
