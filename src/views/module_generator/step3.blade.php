@@ -460,7 +460,7 @@
                             </td>
                             <td>
                                 <select class='form-control width' name='width[]'>
-                                    @for($i=10;$i>=1;$i--)
+                                    @for($i=12;$i>=1;$i--)
                                         <option {{ ($form['width'] == "col-sm-$i")?"selected":"" }} value='col-sm-{{$i}}'>{{$i}}</option>
                                     @endfor
                                 </select>
@@ -575,8 +575,8 @@
                                    name='validation[]' value='required' placeholder='Enter Laravel Validation'/></td>
                         <td>
                             <select class='form-control width' name='width[]'>
-                                @for($i=10;$i>=1;$i--)
-                                    <option {{ ($i==9)?"selected":"" }} value='col-sm-{{$i}}'>{{$i}}</option>
+                                @for($i=12;$i>=1;$i--)
+                                    <option {{ ($i==12)?"selected":"" }} value='col-sm-{{$i}}'>{{$i}}</option>
                                 @endfor
                             </select>
                         </td>
