@@ -59,6 +59,7 @@ class CrudboosterUpdateCommand extends Command
         $configLFMModified = str_replace("'images_folder_name' => 'photos'", "'images_folder_name' => 'uploads'", $configLFMModified);
         $configLFMModified = str_replace("'files_folder_name'  => 'files'", "'files_folder_name'  => 'uploads'", $configLFMModified);
         file_put_contents(config_path('lfm.php'), $configLFMModified);
+        chmod(config_path('lfm.php'), 0664);
 
         $this->info('Dumping the autoloaded files and reloading all new files...');
         $composer = $this->findComposer();
