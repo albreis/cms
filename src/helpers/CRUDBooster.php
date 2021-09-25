@@ -994,9 +994,16 @@ class CRUDBooster
         $child_table = CRUDBooster::parseSqlTable($child_table)['table'];
         if (Schema::hasColumn($child_table, 'id_'.$parent_table)) {
             return 'id_'.$parent_table;
-        } else {
-            return $parent_table.'_id';
         }
+
+        $parts = explode(',', $parent_table);
+        if(count($parts) > 1) {
+            if (Schema::hasColumn($child_table, $parts[1])) {
+                return $parts[1];
+            }
+        }
+
+        return $parent_table.'_id';
     }
 
     public static function getTableForeignKey($fieldName)
@@ -1288,15 +1295,22 @@ class CRUDBooster
 
     public static function generateAPI($controller_name, $table_name, $permalink, $method_type = 'post')
     {
+        $fullName = $controller_name;
+        $_namespace = explode('/', $controller_name);
+        $namespace = '';
+        if(count($_namespace) > 1) {
+            $controller_name = array_pop($_namespace);
+            $namespace = '\\' . str_replace('/', '\\', implode('/', $_namespace));
+        }
         $php = '
-		<?php namespace App\Http\Controllers;
+		<?php namespace App\Http\Controllers\Api'.$namespace.';
 
 		use Session;
 		use Request;
 		use DB;
 		use CRUDBooster;
 
-		class Api'.$controller_name.'Controller extends \crocodicstudio\crudbooster\controllers\ApiController {
+		class '.$controller_name.' extends \crocodicstudio\crudbooster\controllers\ApiController {
 
 		    function __construct() {    
 				$this->table       = "'.$table_name.'";        
@@ -1328,8 +1342,14 @@ class CRUDBooster
 		';
 
         $php = trim($php);
-        $path = base_path("app/Http/Controllers/");
-        file_put_contents($path.'Api'.$controller_name.'Controller.php', $php);
+        $path = app_path("Http/Controllers/Api/{$fullName}");
+        if(!file_exists(dirname($path))) {
+            mkdir(dirname($path), 0777, true);
+        }
+        if(!file_exists($path.'.php')) {
+            file_put_contents($path.'.php', $php);
+            chmod($path.'.php', 0777);
+        }
     }
 
     public static function generateController($table, $name = null)
@@ -1877,6 +1897,7 @@ class CRUDBooster
 
         //create file controller
         file_put_contents($path.'Admin'.$controllername.'.php', $php);
+        chmod($path.'Admin'.$controllername.'.php', 0664);
 
         return 'Admin'.$controllername;
     }
