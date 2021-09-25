@@ -1,6 +1,6 @@
 ## How To Put Your Own Javascript
 
-Open the module controller. Find `$this->script_js` in `cbInit()` method.
+Open the module controller. Find `$this->script_js` in `cmsInit()` method.
 
 ```php
 $this->script_js = "

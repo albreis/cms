@@ -1406,7 +1406,7 @@ class CMS
 
 	class Admin'.$controllername.' extends \albreis\cms\controllers\CMSController {
 
-	    public function cbInit() {
+	    public function cmsInit() {
 	    	# START CONFIGURATION DO NOT REMOVE THIS LINE
 			$this->table 			   = "'.$table.'";	        
 			$this->title_field         = "'.$name_col.'";

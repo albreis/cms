@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Storage;
 
 class SettingsController extends CMSController
 {
-    public function cbInit()
+    public function cmsInit()
     {
         $this->module_name = "Settings";
         $this->table = 'cms_settings';

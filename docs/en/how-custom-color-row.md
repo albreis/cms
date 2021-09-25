@@ -2,7 +2,7 @@
 
 Some cases you need to change the color of row. For example is change the rows color that has status 'active' to be green color.
 
-Open the module controller, find `$this->table_row_color` in `cbInit()` method.
+Open the module controller, find `$this->table_row_color` in `cmsInit()` method.
 
 ```php
 $this->table_row_color = array();

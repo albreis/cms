@@ -1,11 +1,11 @@
 # How To Make A Custom View Of Index Method
 
-A way to custom the index method is override the existing index method. This is best way if CB can't handle the layout that you want
+A way to custom the index method is override the existing index method. This is best way if CMSHelper can't handle the layout that you want
 
 ```php
 public function getIndex() {
   //First, Add an auth
-   if(!CRUDBooster::isView()) CRUDBooster::redirect(CRUDBooster::adminPath(),trans('crudbooster.denied_access'));
+   if(!CMS::isView()) CMS::redirect(CMS::adminPath(),trans('cms.denied_access'));
    
    //Create your own query 
    $data = [];
@@ -19,8 +19,8 @@ public function getIndex() {
 
 Create your own view in `/resources/views/your_custom_view_index.blade.php'
 ```php
-<!-- First you need to extend the CB layout -->
-@extends('crudbooster::admin_template')
+<!-- First you need to extend the CMSHelper layout -->
+@extends('cms::admin_template')
 @section('content')
 <!-- Your custom  HTML goes here -->
 <table class='table table-striped table-bordered'>
@@ -40,12 +40,12 @@ Create your own view in `/resources/views/your_custom_view_index.blade.php'
         <td>{{$row->price}}</td>
         <td>
           <!-- To make sure we have read access, wee need to validate the privilege -->
-          @if(CRUDBooster::isUpdate() && $button_edit)
-          <a class='btn btn-success btn-sm' href='{{CRUDBooster::mainpath("edit/$row->id")}}'>Edit</a>
+          @if(CMS::isUpdate() && $button_edit)
+          <a class='btn btn-success btn-sm' href='{{CMS::mainpath("edit/$row->id")}}'>Edit</a>
           @endif
           
-          @if(CRUDBooster::isDelete() && $button_edit)
-          <a class='btn btn-success btn-sm' href='{{CRUDBooster::mainpath("delete/$row->id")}}'>Delete</a>
+          @if(CMS::isDelete() && $button_edit)
+          <a class='btn btn-success btn-sm' href='{{CMS::mainpath("delete/$row->id")}}'>Delete</a>
           @endif
         </td>
        </tr>

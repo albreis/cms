@@ -1,12 +1,12 @@
 # How To Make A Custom View Of Detail Method
 
-A way to make a custom view of detail method is override it. This is a best way if CB can't handle the layout that you want.
+A way to make a custom view of detail method is override it. This is a best way if CMSHelper can't handle the layout that you want.
 
 ```php
 public function getDetail($id) {
   //Create an Auth
-  if(!CRUDBooster::isRead() && $this->global_privilege==FALSE || $this->button_edit==FALSE) {    
-    CRUDBooster::redirect(CRUDBooster::adminPath(),trans("crudbooster.denied_access"));
+  if(!CMS::isRead() && $this->global_privilege==FALSE || $this->button_edit==FALSE) {    
+    CMS::redirect(CMS::adminPath(),trans("cms.denied_access"));
   }
   
   $data = [];
@@ -21,8 +21,8 @@ public function getDetail($id) {
 Then, create your own `detail view`
 
 ```php
-<!-- First, extends to the CRUDBooster Layout -->
-@extends('crudbooster::admin_template')
+<!-- First, extends to the CMS Layout -->
+@extends('cms::admin_template')
 @section('content')
   <!-- Your html goes here -->
   <div class='panel panel-default'>

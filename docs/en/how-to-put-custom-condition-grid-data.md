@@ -2,7 +2,7 @@
 
 In some case you need to make a condition of grid data query.
 
-CRUDBooster provide the method that you can use to customize the query of grid data. 
+CMS provide the method that you can use to customize the query of grid data. 
 
 ```php
 public function hook_query_index(&$query) {

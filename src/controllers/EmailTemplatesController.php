@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\PDF;
 
 class EmailTemplatesController extends \albreis\cms\controllers\CMSController
 {
-    public function cbInit()
+    public function cmsInit()
     {
         $this->table = "cms_email_templates";
         $this->primary_key = "id";

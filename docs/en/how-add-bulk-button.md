@@ -11,7 +11,7 @@ Some cases you need to add a bulk button to gives a possibility set status to se
 | description | varchar(255) |
 | status | varchar(25) default 'pending' |
 
-First, you need add the button, so open the module controller, find `$this->button_selected` in `cbInit()` method.
+First, you need add the button, so open the module controller, find `$this->button_selected` in `cmsInit()` method.
 ```php
 $this->button_selected = array();
 $this->button_selected[] = ['label'=>'Set Active','icon'=>'fa fa-check','name'=>'set_active'];

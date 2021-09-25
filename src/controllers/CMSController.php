@@ -127,7 +127,7 @@ class CMSController extends Controller
 
     public function cbLoader()
     {
-        $this->cbInit();
+        $this->cmsInit();
 
         $this->checkHideForm();
 

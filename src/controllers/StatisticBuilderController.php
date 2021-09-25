@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Request;
 
 class StatisticBuilderController extends CMSController
 {
-    public function cbInit()
+    public function cmsInit()
     {
         $this->table = "cms_statistics";
         $this->primary_key = "id";

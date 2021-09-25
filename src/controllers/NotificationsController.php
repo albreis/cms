@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\PDF;
 
 class NotificationsController extends CMSController
 {
-    public function cbInit()
+    public function cmsInit()
     {
         $this->table = "cms_notifications";
         $this->primary_key = "id";

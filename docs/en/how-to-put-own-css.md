@@ -1,6 +1,6 @@
 ## How To Put Your Own CSS Stylesheet
 
-Open the module controller. Find `$this->style_css` in `cbInit()` method.
+Open the module controller. Find `$this->style_css` in `cmsInit()` method.
 
 ```php
 $this->style_css = "

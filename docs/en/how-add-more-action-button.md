@@ -9,11 +9,11 @@
 | description | varchar(255) |
 | status | varchar(25) default 'pending' |
 
-Open your module controller. Find `$this->addaction` in `cbInit()` method.
+Open your module controller. Find `$this->addaction` in `cmsInit()` method.
 
 ```php
-$this->addaction[] = ['label'=>'Set Active','url'=>CRUDBooster::mainpath('set-status/active/[id]'),'icon'=>'fa fa-check','color'=>'success','showIf'=>"[status] == 'pending'"];
-$this->addaction[] = ['label'=>'Set Pending','url'=>CRUDBooster::mainpath('set-status/pending/[id]'),'icon'=>'fa fa-ban','color'=>'warning','showIf'=>"[status] == 'active'", 'confirmation' => true];
+$this->addaction[] = ['label'=>'Set Active','url'=>CMS::mainpath('set-status/active/[id]'),'icon'=>'fa fa-check','color'=>'success','showIf'=>"[status] == 'pending'"];
+$this->addaction[] = ['label'=>'Set Pending','url'=>CMS::mainpath('set-status/pending/[id]'),'icon'=>'fa fa-ban','color'=>'warning','showIf'=>"[status] == 'active'", 'confirmation' => true];
 ```
 It will add **Set Active** button if a row has status 'pending', and the opposite, it will add **Set Pending** if a row has status 'active'
 
@@ -21,13 +21,13 @@ In the `showIf` attribute, you can fill anything condition with any other operat
 
 If the `confirmation` attribute is set to 'true', a confirm dialogue will show before the action takes place.
 
-Then, lets create a method to update the `products` status. Create a method after `cbInit()` method.
+Then, lets create a method to update the `products` status. Create a method after `cmsInit()` method.
 ```php
 public function getSetStatus($status,$id) {
    DB::table('products')->where('id',$id)->update(['status'=>$status]);
    
    //This will redirect back and gives a message
-   CRUDBooster::redirect($_SERVER['HTTP_REFERER'],"The status product has been updated !","info");
+   CMS::redirect($_SERVER['HTTP_REFERER'],"The status product has been updated !","info");
 }
 ```
 

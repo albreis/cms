@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Route;
 
 class ApiCustomController extends CMSController
 {
-    public function cbInit()
+    public function cmsInit()
     {
         $this->table = 'cms_apicustom';
         $this->primary_key = 'id';

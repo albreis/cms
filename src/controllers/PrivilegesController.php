@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Session;
 
 class PrivilegesController extends CMSController
 {
-    public function cbInit()
+    public function cmsInit()
     {
         $this->module_name = "Privilege";
         $this->table = 'cms_privileges';

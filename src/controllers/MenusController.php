@@ -11,7 +11,7 @@ use albreis\cms\fonts\Fontawesome;
 
 class MenusController extends CMSController
 {
-    public function cbInit()
+    public function cmsInit()
     {
         $this->table = "cms_menus";
         $this->primary_key = "id";

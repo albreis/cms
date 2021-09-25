@@ -9,7 +9,7 @@ use albreis\cms\controllers\CMSController;
 class AdminCmsUsersController extends CMSController {
 
 
-	public function cbInit() {
+	public function cmsInit() {
 		# START CONFIGURATION DO NOT REMOVE THIS LINE
 		$this->table               = 'cms_users';
 		$this->primary_key         = 'id';

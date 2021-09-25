@@ -1,6 +1,6 @@
-# Welcome To CRUDBooster
+# Welcome To CMS
 
-CRUDBooster is CRUD Generator for laravel, with the most important features web application development. It's easy, flexible, and powerful.
+CMS is CRUD Generator for laravel, with the most important features web application development. It's easy, flexible, and powerful.
 
 ## System Requirement and Basic Technical Knowledge
 - Web Server as:
@@ -26,7 +26,7 @@ CRUDBooster is CRUD Generator for laravel, with the most important features web 
 
 1. Open the terminal, navigate to your laravel project directory.
 ```php
-$ composer require crocodicstudio/crudbooster=5.6.*
+$ composer require crocodicstudio/cms=5.6.*
 ```
 
 2. Setting the database configuration, open .env file at project root directory
@@ -38,14 +38,14 @@ DB_PASSWORD=**password**
 
 3. Run the following command at the terminal
 ```php
-$ php artisan crudbooster:install
+$ php artisan cms:install
 ```
 
 ## Backend URL
 ```php
 /admin/login
 ```
-- default email : admin@crudbooster.com
+- default email : admin@cms.com
 - default password : 123456
 
 ## What's Next

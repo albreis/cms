@@ -10,7 +10,7 @@ use albreis\cms\fonts\Fontawesome;
 
 class ModulsController extends CMSController
 {
-    public function cbInit()
+    public function cmsInit()
     {
         $this->table = 'cms_moduls';
         $this->primary_key = 'id';

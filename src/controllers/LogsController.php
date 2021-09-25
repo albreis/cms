@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\PDF;
 
 class LogsController extends CMSController
 {
-    public function cbInit()
+    public function cmsInit()
     {
         $this->table = 'cms_logs';
         $this->primary_key = 'id';
