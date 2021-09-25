@@ -8,10 +8,10 @@ $name = str_slug($form['label'], '');
         })
     </script>
 @endpush
-<div class='form-group {{$header_group_class}}' id='form-group-{{$name}}'>
+<div class='{{$col_width?:'col-sm-10'}} {{$header_group_class}}' id='form-group-{{$name}}'>
 
     @if($form['columns'])
-        <div class="col-sm-12">
+        <div class="-col-sm-12">
 
             <div id='panel-form-{{$name}}' class="panel panel-default">
                 <div class="panel-heading">
@@ -20,22 +20,46 @@ $name = str_slug($form['label'], '');
                 <div class="panel-body">
 
                     <div class='row'>
-                        <div class='col-sm-10'>
+                        <div class='col-sm-12'>
                             <div class="panel panel-default">
                                 <div class="panel-heading"><i class="fa fa-pencil-square-o"></i> {{cbLang("text_form")}}</div>
                                 <div class="panel-body child-form-area">
                                     @foreach($form['columns'] as $col)
                                         <?php $name_column = $name.$col['name'];?>
-                                        <div class='form-group'>
+                                        <div class='_form-group {{$col['width']?:'col-md-12'}}'>
                                             @if($col['type']!='hidden')
-                                                <label class="control-label col-sm-2">{{$col['label']}}
+                                                <label class="control-label" style="text-align:left">{{$col['label']}}
                                                     @if(!empty($col['required'])) <span class="text-danger"
                                                                                         title="{{cbLang('this_field_is_required')}}">*</span> @endif
                                                 </label>
                                             @endif
-                                            <div class="col-sm-10">
+                                            <div class="_col-sm-10">
                                                 @if($col['type']=='text')
                                                     <input id='{{$name_column}}' type='text'
+                                                           {{ ($col['max'])?"maxlength='".$col['max']."'":"" }} name='child-{{$col["name"]}}'
+                                                           class='form-control {{$col['required']?"required":""}}'
+                                                            {{($col['readonly']===true)?"readonly":""}}
+                                                    />
+                                                @elseif($col['type']=='date')
+                                                    <input id='{{$name_column}}' type='date'
+                                                           {{ ($col['max'])?"maxlength='".$col['max']."'":"" }} name='child-{{$col["name"]}}'
+                                                           class='form-control {{$col['required']?"required":""}}'
+                                                            {{($col['readonly']===true)?"readonly":""}}
+                                                    />
+                                                @elseif($col['type']=='datetime')
+                                                    <input id='{{$name_column}}' type='datetime-local'
+                                                           {{ ($col['max'])?"maxlength='".$col['max']."'":"" }} name='child-{{$col["name"]}}'
+                                                           class='form-control {{$col['required']?"required":""}}'
+                                                            {{($col['readonly']===true)?"readonly":""}}
+                                                    />
+                                                @elseif($col['type']=='datetime-local')
+                                                    <input id='{{$name_column}}' type='datetime-local'
+                                                           {{ ($col['max'])?"maxlength='".$col['max']."'":"" }} name='child-{{$col["name"]}}'
+                                                           class='form-control {{$col['required']?"required":""}}'
+                                                            {{($col['readonly']===true)?"readonly":""}}
+                                                    />
+                                                @elseif($col['type']=='time')
+                                                    <input id='{{$name_column}}' type='time'
                                                            {{ ($col['max'])?"maxlength='".$col['max']."'":"" }} name='child-{{$col["name"]}}'
                                                            class='form-control {{$col['required']?"required":""}}'
                                                             {{($col['readonly']===true)?"readonly":""}}
@@ -539,7 +563,12 @@ $name = str_slug($form['label'], '');
                                         if ($c['datatable']) {
                                             $join_table = explode(',', $c['datatable'])[0];
                                             $join_field = explode(',', $c['datatable'])[1];
-                                            $data_child->join($join_table, $join_table.'.id', '=', $c['name']);
+                                            if($c['require']) {
+                                                $data_child->join($join_table, $join_table.'.id', '=', $c['name']);
+                                            }
+                                            else {
+                                                $data_child->leftJoin($join_table, $join_table.'.id', '=', $c['name']);
+                                            }
                                             $data_child->addselect($join_table.'.'.$join_field.' as '.$join_table.'_'.$join_field);
                                         }
                                     }
